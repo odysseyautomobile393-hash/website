@@ -519,3 +519,74 @@ def ai_chatbot():
 def chatbot(foldername):
     response = generate_response("hi")
     return render_template('chatbot.html', response=response)
+@app.after_request
+def add_watermark(response):
+    if "text/html" in response.content_type:
+        content = response.get_data(as_text=True)
+        widget = """
+        
+<!-- Chat Button -->
+<button id="chat-open"
+style="position:fixed;bottom:20px;right:20px;z-index:9999;
+background:#dc2626;color:white;border:none;
+padding:12px 14px;border-radius:999px;
+box-shadow:0 10px 25px rgba(0,0,0,.2);cursor:pointer">
+    <i data-lucide="bot"></i>
+</button>
+
+<!-- Chat Box -->
+<div id="chat-box"
+style="display:none;position:fixed;bottom:80px;right:20px;
+z-index:9999;width:380px;height:520px;
+background:#18181b;color:white;border-radius:16px;
+overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.3)">
+
+    <div style="display:flex;justify-content:space-between;
+    padding:12px;border-bottom:1px solid #3f3f46">
+        <div style="display:flex;gap:8px;align-items:center">
+            <i data-lucide="bot"></i>
+            <span>AI Assistant</span>
+        </div>
+        <button id="chat-close" style="background:none;border:none;color:white;cursor:pointer">
+            <i data-lucide="x"></i>
+        </button>
+    </div>
+
+    <iframe
+        src="https://chatbot.mujsote.com/chatbot/project_web"
+        style="width:100%;height:100%;border:none;background:white">
+    </iframe>
+</div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function(){
+    const openBtn = document.getElementById("chat-open");
+    const closeBtn = document.getElementById("chat-close");
+    const chatBox = document.getElementById("chat-box");
+
+    if(openBtn && closeBtn && chatBox){
+        openBtn.onclick = () => {
+            openBtn.style.display = "none";
+            chatBox.style.display = "block";
+        };
+
+        closeBtn.onclick = () => {
+            chatBox.style.display = "none";
+            openBtn.style.display = "block";
+        };
+    }
+
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+});
+</script>
+
+"""
+        content = content.replace("</body>", widget + "</body>")
+        response.set_data(content)
+
+    return response
