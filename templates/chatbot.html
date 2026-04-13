@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Interface</title>
+    <style>
+        .container {
+            background: #ffffff;
+            /* padding: 20px; */
+            border-radius: 5px;
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+            margin-top: 20px;
+            margin-bottom: 60px;
+        }
+
+        .chatbot-response {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        #user-input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            position: fixed;
+            bottom: 60px;
+            left: 7%;
+            z-index: 1000;
+            background: #fff;
+            display:block
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="chatbox">
+            <div id="messages" class="messages"></div>
+            <input type="text" id="user-input" placeholder="Type your message here..." />
+            <button id="send-button" style="display: none;">Send</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const sendButton = document.getElementById("send-button");
+            const userInput = document.getElementById("user-input");
+            const messagesDiv = document.getElementById("messages");
+            sendButton.onclick = async function() {
+                const message = userInput.value.trim();
+                if (!message) return;
+
+                appendMessage("You", message);
+                userInput.value = "";
+                try {
+                    const res = await fetch("/ai/chatbot", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: message})
+                    });
+                    const data = await res.json();
+                    appendMessage("Bot", data.response);
+                } catch (error) {
+                    console.error("Error:", error);
+                    appendMessage("Bot", "Sorry, something went wrong.");
+                }
+            };
+            userInput.addEventListener("keydown", function(e) {
+                if (e.key === "Enter") {
+                    sendButton.click();
+                }
+            });
+            function appendMessage(sender, text) {
+                const messageElement = document.createElement("div");
+                messageElement.innerHTML = `<b>${sender}:</b> ${text}`;
+                messagesDiv.appendChild(messageElement);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

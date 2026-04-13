@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Used Tyres Hamilton — Salvage Odyssey Auto</title>
+  <meta name="description" content="Browse quality used tyres in Hamilton. Filter by size and get fast local pickup or fitting.">
+  <link rel="canonical" href="/used-tyres-hamilton">
+  <link rel="icon" type="image/jpg" href="/static/logo-removebg.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-gray-900">
+  <header class="bg-black text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="/" class="font-bold text-xl">Salvage Odyssey Auto</a>
+      <nav class="space-x-4 hidden md:block">
+        <a href="/services/tyres" class="hover:underline">Tyres</a>
+        <a href="/services/tyres/used-tyres" class="hover:underline">Used Tyres</a>
+        <a href="/contact_page" class="hover:underline">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto p-8">
+    <h1 class="text-3xl font-bold mb-4">Used Tyres in Hamilton</h1>
+    <p class="mb-6">We stock a range of used tyres. Search by size and contact us to reserve or fit them locally.</p>
+
+    <section class="mb-8">
+      <h2 class="text-2xl font-semibold mb-2">Available tyres</h2>
+      {% if tires %}
+        <div class="grid md:grid-cols-2 gap-4">
+          {% for t in tires %}
+            <div class="border rounded p-4">
+              <div class="font-semibold">{{ t.make or 'Tyre' }} - {{ t.size or 'Unknown' }}</div>
+              <div class="text-sm text-gray-600">Condition: {{ t.condition or 'Used' }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>No used tyres listed yet. Please check back soon.</p>
+      {% endif %}
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold mb-2">Contact to buy or fit</h2>
+      <p class="mb-4">Call <a href="tel:02041363660" class="text-red-600 font-bold">020 4136 3660</a> or use our contact form.</p>
+      <a href="/services/tyres/used-tyres" class="inline-block bg-red-600 text-white px-6 py-3 rounded">Browse All Used Tyres</a>
+    </section>
+  </main>
+
+  <footer class="bg-gray-100 p-6 mt-12 text-center text-sm">
+    &copy; Salvage Odyssey Auto
+  </footer>
+</body>
+</html>

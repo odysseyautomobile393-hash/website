@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Used Tyres - Salvage Odyssey Auto</title>
+    <link rel="icon" type="image/jpg" href="/static/logo-removebg.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="min-h-screen bg-white">
+        <!-- Navigation -->
+        <nav class="bg-black text-white sticky top-0 z-50 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <div class="w-16 h-16 rounded-lg flex items-center justify-center">
+                            <img src="/static/logo-removebg.png" alt="Logo" class="w-12 h-12">
+                        </div>
+                        <span class="ml-3 text-xl font-bold hidden sm:block">Salvage Odyssey Auto</span>
+                    </a>
+                    <div class="flex items-center gap-4">
+                        <a href="/services/tyres" class="text-gray-300 hover:text-red-600">← Back to Tyres</a>
+                        <a href="/" class="text-red-600 hover:text-red-700">Home</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-red-600 to-red-700 text-white py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Used Tyres</h1>
+                <p class="text-lg text-red-100">Quality used tyres at great prices - Search our inventory</p>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="py-16 bg-gray-50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-6">Request a tyre</h3>
+                    <form action="/contact" method="post" class="space-y-4">
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Name"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                            required/>
+                        <input
+                            type="tel"
+                            name="phone"
+                            placeholder="Phone No"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                            required/>
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                            required/>
+                        <input
+                            type="text"
+                            name="Tyre_size"
+                            placeholder="Tyre size e.g. 215/45R17"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                            required/>
+                        <textarea
+                            name="message"
+                            placeholder="Message"
+                            rows="4"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none resize-none"
+                            required></textarea>
+                        <button
+                            type="submit"
+                            class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition shadow-lg">
+                            Request a Call Back
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Info Box -->
+                <div class="bg-red-50 border border-red-200 rounded-lg p-6 mt-12">
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">About Our Used Tyres</h3>
+                    <p class="text-gray-700 mb-3">
+                        All used tyres in our inventory are carefully inspected for quality and safety. We ensure they meet industry standards and are safe for road use. Prices may vary based on condition, tread depth, and demand.
+                    </p>
+                    <p class="text-gray-700">
+                        <strong>Can't find what you're looking for?</strong> Contact us at <a href="tel:0204136 3660" class="text-red-600 font-bold">020 4136 3660</a> and we can usually source the tyres you need within a day!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black text-white py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-gray-400 mb-2">© 2026 Salvage Odyssey Auto. All rights reserved.</p>
+                <p class="text-gray-500 text-sm">109 Colombo Street, Frankton, Hamilton</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

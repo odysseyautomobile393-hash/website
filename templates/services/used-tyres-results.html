@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Used Tyres Search Results - Salvage Odyssey Auto</title>
+    <link rel="icon" type="image/jpg" href="/static/logo-removebg.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="min-h-screen bg-white">
+        <!-- Navigation -->
+        <nav class="bg-black text-white sticky top-0 z-50 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <div class="w-16 h-16 rounded-lg flex items-center justify-center">
+                            <img src="/static/logo-removebg.png" alt="Logo" class="w-12 h-12">
+                        </div>
+                        <span class="ml-3 text-xl font-bold hidden sm:block">Salvage Odyssey Auto</span>
+                    </a>
+                    <div class="flex items-center gap-4">
+                        <a href="/services/tyres/used-tyres" class="text-gray-300 hover:text-red-600">← Back to Search</a>
+                        <a href="/" class="text-red-600 hover:text-red-700">Home</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-red-600 to-red-700 text-white py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Used Tyres - Search Results</h1>
+                <p class="text-lg text-red-100">
+                    {% if selected_size %}
+                    Results for size: <span class="font-semibold">{{ selected_size }}</span>
+                    {% else %}
+                    All available tyres
+                    {% endif %}
+                </p>
+            </div>
+        </section>
+
+        <!-- Results Content -->
+        <section class="py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-6 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-gray-900">
+                        {% if tires %}{{ tires|length }}{% else %}0{% endif %} Tyre(s) Found
+                    </h2>
+                    <a href="/services/tyres/used-tyres" class="text-red-600 font-semibold hover:text-red-700">
+                        ← Modify Search
+                    </a>
+                </div>
+
+                {% if tires %}
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for tire in tires %}
+                        <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-lg font-bold text-gray-900">{{ tire.get('brand', 'Unknown Brand') }}</h3>
+                                {% if tire.get('price') %}
+                                <span class="text-2xl font-bold text-red-600">${{ tire.get('price') }}</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="space-y-2 mb-4">
+                                {% if tire.get('size') %}
+                                <p><span class="font-semibold text-gray-700">Size:</span> {{ tire.get('size') }}</p>
+                                {% endif %}
+                                {% if tire.get('condition') %}
+                                <p><span class="font-semibold text-gray-700">Condition:</span> {{ tire.get('condition') }}</p>
+                                {% endif %}
+                                {% if tire.get('tread') %}
+                                <p><span class="font-semibold text-gray-700">Tread:</span> {{ tire.get('tread') }}</p>
+                                {% endif %}
+                                {% if tire.get('description') %}
+                                <p><span class="font-semibold text-gray-700">Description:</span> {{ tire.get('description') }}</p>
+                                {% endif %}
+                            </div>
+
+                            <a href="/#contact" class="inline-block w-full bg-red-600 text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors text-center">
+                                Inquire About This Tyre
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-8 text-center">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">No Tyres Found</h3>
+                        <p class="text-gray-700 mb-4">
+                            {% if selected_size %}
+                            Sorry, we don't have any tyres in size <strong>{{ selected_size }}</strong> available right now.
+                            {% else %}
+                            No tyres are currently in stock.
+                            {% endif %}
+                        </p>
+                        <p class="text-gray-600 mb-6">
+                            <strong>Don't worry!</strong> We can usually get any tyre size within a day. Contact us to place a special request.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <a href="/services/tyres/used-tyres" class="inline-block bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-700 transition-colors">
+                                Try Another Size
+                            </a>
+                            <a href="/#contact" class="inline-block bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                                Make a Request
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-6 mt-8">
+                        <h3 class="text-lg font-bold text-gray-900 mb-3">We Can Get It!</h3>
+                        <p class="text-gray-700 mb-4">
+                            If you haven't found the exact tyre size you're looking for, don't worry! We have access to a wide network of suppliers and can source almost any tyre. 
+                        </p>
+                        <p class="text-gray-700 mb-4">
+                            <strong>Typical turnaround: Within 1 day</strong>
+                        </p>
+                        <p class="text-gray-700">
+                            Contact us at <a href="tel:0204136 3660" class="text-red-600 font-bold">020 4136 3660</a> with your tyre size and specifications, and we'll provide you with a quote and delivery estimate.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black text-white py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-gray-400 mb-2">© 2026 Salvage Odyssey Auto. All rights reserved.</p>
+                <p class="text-gray-500 text-sm">109 Colombo Street, Frankton, Hamilton</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

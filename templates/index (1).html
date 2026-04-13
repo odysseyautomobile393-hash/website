@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salvage Odyssey Auto</title>
+    <link rel="icon" type="image/jpg" href="static/logo-removebg.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="manifest" href="/static/manifest.json">
+</head>
+<body>
+    <div class="min-h-screen bg-white">
+      <div id="Navbar">
+        <nav class="bg-black text-white sticky top-0 z-50 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-16 h-16 rounded-lg flex items-center justify-center">
+                            <span class="text-red-600 font-bold text-xs">
+                                <img src="static/logo-removebg.png" alt="Salvage odyssey auto logo">
+                            </span>
+                        </div>
+                        <span class="ml-3 text-xl font-bold hidden sm:block">Salvage Odyssey Auto</span>
+                    </div>
+
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#about" class="hover:text-red-600 transition-colors duration-200 font-medium">
+                        About Us
+                        </a>
+                        <div class="relative group">
+                            <button class="hover:text-red-600 transition-colors duration-200 font-medium flex items-center gap-1">
+                                Services
+                                <i data-lucide="ChevronDown" class="w-4 h-4"></i>
+                            </button>
+                            <div class="absolute left-0 mt-2 w-64 bg-white text-black rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="/services/panel-beater" class="block px-4 py-3 hover:bg-red-600 hover:text-white transition-colors duration-200 rounded-t-lg">
+                                    Panel Beater & Repair
+                                </a>
+                                <a href="/services/tyres" class="block px-4 py-3 hover:bg-red-600 hover:text-white transition-colors duration-200">
+                                    Tyres
+                                </a>
+                            </div>
+                        </div>
+                        <a href="/contact_page" class="hover:text-red-600 transition-colors duration-200 font-medium">
+                        Contact
+                        </a>
+                    </div>
+
+                    <div class="md:hidden">
+                        <button
+                            class="text-white hover:text-red-600 transition-colors">
+                            <i data-lucide="X" id="close_menu" class="hidden w-6 h-6"></i> <i data-lucide="Menu" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:hidden bg-black border-t border-gray-800">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a
+                        href="#about"
+                        class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors"
+                        onClick="setIsMenuOpen(false)">
+                        About Us
+                    </a>
+                    <div>
+                        <button
+                            onClick="setIsServicesOpen(!isServicesOpen)"
+                            class="w-full text-left px-3 py-2 hover:bg-red-600 rounded-md transition-colors flex items-center justify-between">
+                            Services
+                            <i data-lucide="ChevronDown" class="w-4 h-4 transition-transform 'rotate-180"></i>
+                        </button>
+                        <div class="pl-4 mt-1 space-y-1">
+                            <a href="/services/panel-beater" class="block px-3 py-2 text-sm hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
+                                Panel Beater & Repair
+                            </a>
+                            <a href="/services/tyres" class="block px-3 py-2 text-sm hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
+                                Tyres
+                            </a>
+                        </div>
+                    </div>
+                    <a href="/contact_page"
+                        class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors"
+                        onClick="setIsMenuOpen(false)">
+                        Contact
+                    </a>
+                </div>
+            </div>
+        </nav>
+      </div>
+      <div id="Hero">
+        <section id="about" class="relative py-16 bg-cover bg-center transition-all duration-700"
+        style="background-image:url('/static/img/1.jpg')">
+            <div class="absolute inset-0 bg-black/60"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 items-start">
+                    <div>
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                            Your Trusted Partner in Quality Vehicle Restoration and Paint Services
+                        </h1>
+                        <p class="text-lg text-gray-200 mb-8 leading-relaxed">
+                        We take pride in transforming vehicles to their best possible condition. Whether it's giving your car a fresh look, repairing dents and rust, or working on insurance claims, our expert team delivers top-tier results every time.
+                        </p>
+                        <div class="space-y-4">
+                            <h3 class="text-2xl font-bold text-white">Panel Beaters Hamilton</h3>
+                            <p class="text-gray-200">
+                                Get in touch with us today and experience the Salvage Odyssey Auto difference.
+                            </p>
+                            <div class="bg-red-600 text-white p-6 rounded-lg inline-block">
+                                <p class="font-semibold mb-2">Free Consultation</p>
+                                <a href="tel:02041363660"
+                                   class="text-2xl font-bold hover:underline">
+                                   020 4136 3660
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-6">Let's Get Connected</h3>
+                        <form action="/contact" method="post" class="space-y-4">
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Name"
+                                class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                                required/>
+                            <input
+                                type="tel"
+                                name="phone"
+                                placeholder="Phone No"
+                                class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                                required/>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                                required/>
+                            <textarea
+                                name="message"
+                                placeholder="Message"
+                                rows="4"
+                                class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none resize-none"
+                                required></textarea>
+                            <button
+                                type="submit"
+                                class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition shadow-lg">
+                                Request a Call Back
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+      </div>
+      <div id="Estimates">
+        <section class="py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white rounded-xl shadow-xl p-8 md:p-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
+                        Get a Free Estimate
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-8 text-center">
+                        Tell us about you and your vehicle to get a free initial repair estimate
+                    </p>
+                    <form action="/contact" method="post" class="max-w-2xl mx-auto space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" name="name"
+                            placeholder="Your Name"
+
+                            class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none"
+                            required/>
+                        <input type="tel" name="phone" placeholder="Phone Number"
+
+                            class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none"
+                            required/>
+                        </div>
+                        <input type="email" name="email" placeholder="Email Address"
+
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none"
+                        required/>
+                        <textarea name="message" placeholder="Tell us about your vehicle and the repairs needed"
+
+                        rows="4"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none resize-none"
+                        required></textarea>
+                        <button type="submit"
+                        class="w-full bg-red-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-red-700 transition-colors duration-200 shadow-lg">
+                        Schedule Your Free Consultation
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+      </div>
+      <div id="WhoWeAre">
+        <section class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-4xl font-bold text-gray-900 mb-6 leading-tight">
+                            Bringing New Life to Your Vehicle with Precision and Expertise
+                        </h2>
+                        <p class="text-lg text-gray-700 leading-relaxed mb-8">
+                            We are your trusted local expert in vehicle repair, restoration, and spray painting. With years of experience in the industry, we pride ourselves on delivering top-quality service and results that exceed customer expectations. Whether your vehicle has been in an accident or you're looking to refresh its look, our skilled team is committed to restoring it to its former glory.
+                        </p>
+                        <a href="#Services" class="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200 shadow-lg">
+                            Discover More
+                        </a>
+                    </div>
+                    <div class="bg-gray-200 rounded-xl h-96 flex items-center justify-center">
+                        <span class="text-gray-500 text-xl font-semibold">
+                            <img src="/static/painting_car.jpg">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-16 bg-gray-50 hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
+                    <p class="text-lg text-gray-600">
+                        Skilled professionals dedicated to delivering top-quality vehicle restoration.
+                    </p>
+                </div>
+                <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                    <div class="text-center group">
+                        <div class="h-48 w-48 mx-auto mb-4 overflow-hidden rounded-xl shadow-lg">
+                            <img src="/static/team1.jpg"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition">
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">Sayed Omid</h3>
+                        <p class="text-gray-600">SEO</p>
+                    </div>
+
+                    <div class="text-center group">
+                        <div class="h-48 w-48 mx-auto mb-4 overflow-hidden rounded-xl shadow-lg">
+                            <img src="/static/team2.jpg"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition">
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">Team Member</h3>
+                        <p class="text-gray-600">Spray Paint Specialist</p>
+                    </div>
+
+                    <div class="text-center group">
+                        <div class="h-48 w-48 mx-auto mb-4 overflow-hidden rounded-xl shadow-lg">
+                            <img src="/static/team3.jpg"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition">
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">Team Member</h3>
+                        <p class="text-gray-600">Body Repair Technician</p>
+                    </div>
+
+                    <div class="text-center group">
+                        <div class="h-48 w-48 mx-auto mb-4 overflow-hidden rounded-xl shadow-lg">
+                            <img src="/static/team4.jpg"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition">
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">Team Member</h3>
+                        <p class="text-gray-600">Detailing Expert</p>
+                    </div>
+
+                    <div class="text-center group">
+                        <div class="h-48 w-48 mx-auto mb-4 overflow-hidden rounded-xl shadow-lg">
+                            <img src="/static/team5.jpg"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition">
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">Team Member</h3>
+                        <p class="text-gray-600">Customer Support</p>
+                    </div>
+
+                </div>
+                <div class="text-center mt-12">
+                    <a href="/team"
+                       class="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition shadow-lg">
+                        Read More About Our Team
+                    </a>
+                </div>
+            </div>
+        </section>
+      </div>
+      <div id="Stats">
+        <section class="py-16 bg-gradient-to-r from-red-600 to-red-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                {% for stat in stats %}
+                    <div class="text-center">
+                        <i data-lucide="{{stat.icon}}" class="w-12 h-12 mx-auto mb-4 text-white"></i>
+                        <div class="text-4xl font-bold text-white mb-2">{{ stat.value }}</div>
+                        <div class="text-red-100 font-medium">{{ stat.label }}</div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </section>
+      </div>
+      <div id="Values">
+        <section class="py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Values</h2>
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">Integrity</h3>
+                                <p class="text-gray-700">
+                                We believe in honest, transparent service and provide accurate quotes and updates throughout the repair process.
+                                </p>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">Excellence</h3>
+                                <p class="text-gray-700">
+                                We are dedicated to delivering the highest standards of craftsmanship on every project.
+                                </p>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">Customer Satisfaction</h3>
+                                <p class="text-gray-700">
+                                Our goal is to ensure you are completely satisfied with our work, whether it's a small repair or a complete restoration.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-8">
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Vision</h2>
+                            <p class="text-gray-700">
+                                To be the leading provider of vehicle repair and painting services, known for our precision, quality, and customer satisfaction. We strive to deliver outstanding results that exceed expectations every time.
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
+                            <p class="text-gray-700">
+                                To provide exceptional vehicle rust, panel beating and painting services while delivering outstanding customer care. We believe in honest communication, reliable service, and top-notch craftsmanship, ensuring that your vehicle looks great and drives smoothly after every repair.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+      </div>
+      <div id="Services">
+        <section id="services" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 text-center">Our Services</h2>
+                <p class="text-lg text-gray-600 mb-12 text-center">Choose one of our main service areas to get started quickly.</p>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-12">
+                    <a href="/services/panel-beater" class="block bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 p-8 text-center">
+                        <div class="text-5xl mb-4">
+                            <i data-lucide="Car" class="w-12 h-12 text-red-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Panel Beater & Repair</h3>
+                        <p class="text-gray-600">Panel beating, body parts fitting, spoilers, cut & polish, and full repair services.</p>
+                    </a>
+                    <a href="/services/tyres" class="block bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 p-8 text-center">
+                        <div class="text-5xl mb-4">
+                            <i data-lucide="Disc" class="w-12 h-12 text-red-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Tyres</h3>
+                        <p class="text-gray-600">Buy new tyres, browse used tyres, and quickly find the right size for your vehicle.</p>
+                    </a>
+                </div>
+
+                <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center">Repair & Bodywork Services</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for serviced in servicesd %}
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                        <div class="bg-gray-200 h-48 flex items-center justify-center">
+                            <i data-lucide="{{ serviced.icon }}" class="w-20 h-20 text-red-600"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">{{ serviced.title }}</h3>
+                            <p class="text-gray-700 mb-4">{{ serviced.description }}</p>
+                            <a href="{% if 'Body Parts' in serviced.title %}/services/panel-beater/body-parts{% elif 'Spoiler' in serviced.title %}/services/panel-beater/spoilers{% elif 'Cut & Polish' in serviced.title %}/services/panel-beater/cut-polish{% else %}/services/panel-beater{% endif %}"
+                               class="inline-block text-red-600 font-semibold hover:text-red-700 transition-colors">
+                                Read More →
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </section>
+      </div>
+      <div id="WhyChooseUs">
+        <section class="relative py-16 text-white">
+            <!-- background image -->
+            <div class="absolute inset-0">
+                <img src="/static/whychoosebg.jpg"
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/70"></div>
+            </div>
+
+            <!-- content -->
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold mb-4 text-center">Why Choose Us</h2>
+                <p class="text-lg text-gray-200 mb-12 text-center">
+                    Simple, affordable, and effective car detailing products.
+                </p>
+
+                <a href="/contact_page"
+                   class="block mx-auto w-fit mb-12 px-6 py-3
+                          bg-red-600/90 hover:bg-red-600
+                          text-white font-semibold
+                          rounded-xl
+                          backdrop-blur-md
+                          border border-white/20
+                          shadow-lg
+                          transition-all duration-300">
+                   Contact Us
+                </a>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                {% for reason in reasons %}
+                    <div class="bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 flex items-start space-x-4">
+                        <i data-lucide="{{reason.icon}}" class="w-12 h-12 text-white flex-shrink-0"></i>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">{{ reason.title }}</h3>
+                            <p class="text-gray-200">{{ reason.description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </section>
+      </div>
+      <div id="BlogPosts">
+        <section class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                {% for post in posts %}
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                        <div class="bg-gray-200 h-64 flex items-center justify-center">
+                            <img src="{{ post.img_url }}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ post.title }}</h3>
+                            <p class="text-gray-600 mb-4">{{ post.date }}</p>
+                            <a href="
+                            {% if 'Body Kits' in post.title or 'Spoilers' in post.title %}
+                                /blog/body-kits-and-spoilers
+                            {% else %}
+                                /blog/body-parts-fitting
+                            {% endif %}
+                            " class="inline-block text-red-600 font-semibold hover:text-red-700 transition-colors">
+                                Read More »
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </section>
+      </div>
+      <div id="Support">
+        <section class="py-16 bg-gray-900 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-4">Need Assistance?</h2>
+                <p class="text-xl mb-6">Reach out to our support team at</p>
+                <a
+                    href="tel:0204136 3660"
+                    class="text-4xl font-bold text-red-500 hover:text-red-400 transition-colors">
+                020 4136 3660
+                </a>
+            </div>
+        </section>
+      </div>
+      <div id="Footer">
+        <footer class="bg-black text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid md:grid-cols-3 gap-8 mb-8">
+                    <div>
+                        <p class="text-white leading-relaxed">
+                        We are your trusted local expert in vehicle repair, restoration, and spray painting. With years of experience in the industry, we pride ourselves on delivering top-quality service and results that exceed customer expectations.
+                        </p>
+                        <div class="flex space-x-4 mt-6">
+                            <a href="https://www.facebook.com/salvageodysseyauto"
+                                class="bg-red-600 p-3 rounded-full hover:bg-red-700 transition-colors">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                            </a>
+                            <a href="https://www.instagram.com/odysseyauto.mobile393/"
+                                class="bg-red-600 p-3 rounded-full hover:bg-red-700 transition-colors">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.217.63c-.688.297-1.272.702-1.853 1.284-.582.582-.987 1.166-1.284 1.853-.297.688-.498 1.558-.557 2.836C.008 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.837.297.687.702 1.271 1.284 1.853.582.582 1.166.987 1.853 1.284.689.297 1.559.498 2.837.557C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.837-.558.687-.297 1.271-.702 1.853-1.284.582-.582.987-1.166 1.284-1.853.297-.689.498-1.559.557-2.837.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.837-.297-.687-.702-1.271-1.284-1.853-.582-.582-1.166-.987-1.853-1.284-.689-.297-1.559-.498-2.837-.557C15.667.008 15.26 0 12 0zm0 2.16c3.203 0 3.585.009 4.849.070 1.171.054 1.805.244 2.227.408.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.354 1.056.408 2.227.061 1.264.07 1.646.07 4.849s-.009 3.585-.07 4.849c-.054 1.171-.244 1.805-.408 2.227-.217.562-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.164-1.056.354-2.227.408-1.264.061-1.646.07-4.849.07s-3.585-.009-4.849-.07c-1.171-.054-1.805-.244-2.227-.408-.562-.217-.96-.477-1.382-.896-.419-.42-.679-.819-.896-1.381-.164-.422-.354-1.056-.408-2.227-.061-1.264-.07-1.646-.07-4.849s.009-3.585.07-4.849c.054-1.171.244-1.805.408-2.227.217-.562.477-.96.896-1.382.42-.419.819-.679 1.381-.896.422-.164 1.056-.354 2.227-.408 1.264-.061 1.646-.07 4.849-.07zm0 3.678a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110 -7.998 3.999 3.999 0 010 7.998zm5.338-10.54a1.44 1.44 0 11 2.88 0 1.44 1.44 0 01-2.88 0z"/></svg>
+                            </a>
+                            <a
+                                href="https://maps.google.com/?q=109+Colombo+Street+Frankton+Hamilton"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="bg-red-600 p-3 rounded-full hover:bg-red-700 transition-colors">
+                                <i data-lucide="MapPin" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Services</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#services" class="text-gray-300 hover:text-red-500 transition-colors">Body Parts Fitting</a></li>
+                            <li><a href="#services" class="text-gray-300 hover:text-red-500 transition-colors">Cut and Polish</a></li>
+                            <li><a href="#services" class="text-gray-300 hover:text-red-500 transition-colors">Damage and Dent Repairs</a></li>
+                            <li><a href="#services" class="text-gray-300 hover:text-red-500 transition-colors">Full Body Spray</a></li>
+                            <li><a href="#services" class="text-gray-300 hover:text-red-500 transition-colors">Rust Repairs</a></li>
+                            <li><a href="#services" class="text-gray-300 hover:text-red-500 transition-colors">Touch Up</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">More Info</h3>
+                        <ul class="space-y-2 mb-6">
+                            <li><a href="#about" class="text-gray-300 hover:text-red-500 transition-colors">About Us</a></li>
+                            <li><a href="/contact" class="text-gray-300 hover:text-red-500 transition-colors">Contact Us</a></li>
+                            <li><a href="tel:0204136 3660" class="text-gray-300 hover:text-red-500 transition-colors">Phone Number</a></li>
+                            <li><a href="mailto:odyssey.auto.mobile393@gmail.com" class="text-gray-300 hover:text-red-500 transition-colors">Email Us</a></li>
+                        </ul>
+                        <h3 class="text-xl font-bold mb-4">Get Started</h3>
+                        <a href="/contact_page" class="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                            Get Started
+                        </a>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-800 pt-8 text-center">
+                    <p class="text-gray-400">
+                        Copyright © 2026 Salvage Odyssey Auto, All rights reserved. Powered by Galactic IT Solutions Limited.
+                    </p>
+                </div>
+            </div>
+        </footer>
+      </div>
+    </div>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+    <script>
+        const aboutImages = [
+          "/static/img/1.jpg",
+          "/static/img/2.jpg",
+          "/static/img/3.jpg",
+          "/static/img/4.jpg"
+        ];
+
+        let aboutIndex = 0;
+        const aboutSection = document.getElementById("about");
+
+        setInterval(() => {
+          aboutIndex = (aboutIndex + 1) % aboutImages.length;
+          aboutSection.style.backgroundImage =
+            `url('${aboutImages[aboutIndex]}')`;
+        }, 5000);
+    </script>
+    <script>
+        let isMenuOpen = false;
+        let isServicesOpen = false;
+
+        const menuBtn = document.querySelector('.md\\:hidden button');
+        const mobileMenu = document.querySelector('.md\\:hidden.bg-black.border-t');
+        const servicesBtn = document.querySelector('[onClick*="setIsServicesOpen"]');
+        const servicesMenu = document.querySelector('.pl-4.mt-1.space-y-1');
+
+        // hide menus initially
+        mobileMenu.style.display = "none";
+        servicesMenu.style.display = "none";
+
+        // toggle mobile menu
+        menuBtn.addEventListener("click", () => {
+            isMenuOpen = !isMenuOpen;
+            mobileMenu.style.display = isMenuOpen ? "block" : "none";
+        });
+
+        // toggle services dropdown
+        servicesBtn.addEventListener("click", () => {
+            isServicesOpen = !isServicesOpen;
+            servicesMenu.style.display = isServicesOpen ? "block" : "none";
+        });
+
+        // close menu when clicking links
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener("click", () => {
+                isMenuOpen = false;
+                mobileMenu.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>

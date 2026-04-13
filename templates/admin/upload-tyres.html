@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Used Tyres CSV - Admin - Salvage Odyssey Auto</title>
+    <link rel="icon" type="image/jpg" href="/static/logo-removebg.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="min-h-screen bg-gray-50">
+        <!-- Navigation -->
+        <nav class="bg-black text-white sticky top-0 z-50 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <div class="w-16 h-16 rounded-lg flex items-center justify-center">
+                            <img src="/static/logo-removebg.png" alt="Logo" class="w-12 h-12">
+                        </div>
+                        <span class="ml-3 text-xl font-bold hidden sm:block">Salvage Odyssey Auto</span>
+                    </a>
+                    <a href="/services/tyres/used-tyres" class="text-red-600 hover:text-red-700 font-semibold">← View Used Tyres</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-red-600 to-red-700 text-white py-12">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl font-bold mb-2">Upload Used Tyres Inventory</h1>
+                <p class="text-red-100">Admin Panel - Manage tyre listings via CSV</p>
+            </div>
+        </section>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+                        <div class="p-4 rounded-lg {% if category == 'success' %}bg-green-100 border border-green-400 text-green-700{% else %}bg-red-100 border border-red-400 text-red-700{% endif %}">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Main Content -->
+        <section class="py-16">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Upload Form -->
+                <div class="bg-white rounded-xl shadow-lg p-8 mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Upload CSV File</h2>
+                    
+                    <form action="/admin/tyres/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
+                        <div class="border-2 border-dashed border-red-300 rounded-lg p-8 text-center hover:border-red-500 transition-colors">
+                            <input type="file" name="file" id="file" accept=".csv" class="hidden" required onchange="updateFileName(this)">
+                            <label for="file" class="cursor-pointer">
+                                <div class="text-5xl mb-4">📄</div>
+                                <p class="text-lg font-semibold text-gray-900 mb-2">Choose CSV File</p>
+                                <p class="text-gray-600 mb-4">or drag and drop</p>
+                                <p class="text-sm text-gray-500">CSV files only</p>
+                            </label>
+                            <p id="fileName" class="text-sm text-red-600 font-semibold mt-4 hidden"></p>
+                        </div>
+
+                        <button type="submit" class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200 text-lg">
+                            Upload Tyres CSV
+                        </button>
+                    </form>
+                </div>
+
+                <!-- CSV Format Guide -->
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">📋 CSV Format Guide</h3>
+                        <p class="text-gray-700 mb-4">Your CSV file should have the following columns in this order:</p>
+                        <div class="bg-white p-4 rounded border border-blue-300 font-mono text-sm text-gray-700 mb-4">
+                            brand,size,condition,tread,price,description
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            <strong>Note:</strong> The first row should be column headers. Make sure the data matches the column order exactly.
+                        </p>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">📝 Column Details</h3>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li><strong>brand:</strong> Tyre brand name (e.g., Michelin)</li>
+                            <li><strong>size:</strong> Tyre size (e.g., 205/55R16)</li>
+                            <li><strong>condition:</strong> Condition description (e.g., Good, Excellent)</li>
+                            <li><strong>tread:</strong> Tread depth (e.g., 7/32", 8mm)</li>
+                            <li><strong>price:</strong> Price in dollars (e.g., 45.99)</li>
+                            <li><strong>description:</strong> Additional details (optional)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Example CSV -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-12">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">💡 Example CSV Content</h3>
+                    <div class="bg-white p-4 rounded border border-gray-300 font-mono text-sm text-gray-700 overflow-x-auto">
+                        <pre>brand,size,condition,tread,price,description
+Michelin,205/55R16,Excellent,8mm,65.00,Low mileage
+Goodyear,225/60R17,Good,6/32in,45.50,Well maintained
+Bridgestone,195/65R15,Fair,4mm,35.00,Some signs of wear
+Continental,215/55R17,Excellent,7mm,72.50,Recently imported
+Pirelli,205/60R16,Good,5mm,48.75,Good grip remaining</pre>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">⚙️ Instructions</h3>
+                    <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                        <li>Prepare your CSV file with the proper format (see example above)</li>
+                        <li>Make sure all required columns are present: brand, size, condition, tread, price, description</li>
+                        <li>Save the file as a CSV (Comma-Separated Values) file</li>
+                        <li>Click the upload area or drag your file to upload</li>
+                        <li>The system will process the file and display the tyres on the Used Tyres page</li>
+                        <li>You can upload a new file at any time to update the inventory</li>
+                    </ol>
+                </div>
+
+                <!-- Go to Used Tyres -->
+                <div class="mt-12 text-center">
+                    <a href="/services/tyres/used-tyres" class="inline-block bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                        View Used Tyres Shop
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black text-white py-12 mt-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-gray-400 mb-2">© 2026 Salvage Odyssey Auto. All rights reserved.</p>
+                <p class="text-gray-500 text-sm">109 Colombo Street, Frankton, Hamilton</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function updateFileName(input) {
+            const fileName = document.getElementById('fileName');
+            if (input.files && input.files[0]) {
+                fileName.textContent = '✓ Selected: ' + input.files[0].name;
+                fileName.classList.remove('hidden');
+            }
+        }
+
+        // Drag and drop functionality
+        const dropZone = document.querySelector('[for="file"]').closest('.border-2');
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-red-500', 'bg-red-50');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-red-500', 'bg-red-50');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-red-500', 'bg-red-50');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('file').files = files;
+                updateFileName(document.getElementById('file'));
+            }
+        });
+    </script>
+</body>
+</html>

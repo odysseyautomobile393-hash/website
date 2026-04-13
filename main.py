@@ -1,0 +1,521 @@
+import os
+import json
+import uuid
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, make_response
+from werkzeug.utils import secure_filename
+import csv
+import os
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, func
+from sqlalchemy.orm import declarative_base, sessionmaker
+import openai
+# Supabase PostgreSQL settings
+SUPABASE_HOST = 'db.zwlhdzpybfsqpmzcslhc.supabase.co'
+SUPABASE_PORT = 5432
+SUPABASE_USER = 'postgres'
+SUPABASE_PASSWORD = 'Sayed$786'
+SUPABASE_DB = 'postgres'
+# SQLAlchemy database URL (PostgreSQL via psycopg2)
+DATABASE_URL = f"postgresql+psycopg2://{SUPABASE_USER}:{SUPABASE_PASSWORD}@{SUPABASE_HOST}:{SUPABASE_PORT}/{SUPABASE_DB}"
+GMAIL_USER = "odysseyauto.mobile393@gmail.com"
+GMAIL_APP_PASSWORD = "upog lspx ecyr hrzg"  # Google App Password
+app = Flask(__name__)
+app.secret_key = os.environ.get('FLASK_SECRET', 'dev-secret-key')
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+ALLOWED_EXTENSIONS = {'csv'}
+
+# Create uploads folder if it doesn't exist
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+# SQLAlchemy setup (synchronous for Flask)
+# Database is already created in Supabase, no need to create it
+# Tables will be created when engine is initialized
+
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+class UserInfo(Base):
+    __tablename__ = 'users_info'
+    id = Column(Integer, primary_key=True)
+    user_uuid = Column(String(64), unique=True, index=True)
+    ip = Column(String(64))
+    user_agent = Column(Text)
+    device = Column(String(128))
+    visits_count = Column(Integer, default=0)
+    first_seen = Column(DateTime)
+    last_seen = Column(DateTime)
+class Referrer(Base):
+    __tablename__ = 'referrers'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(64), unique=True)
+    count = Column(Integer, default=0)
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+def detect_device(user_agent: str) -> str:
+    ua = (user_agent or '').lower()
+    if 'mobile' in ua or 'android' in ua or 'iphone' in ua:
+        return 'mobile'
+    if 'ipad' in ua or 'tablet' in ua:
+        return 'tablet'
+    return 'desktop'
+def register_visit(flask_request):
+    db = SessionLocal()
+    try:
+        # get or create user UUID in session
+        user_uuid = session.get('user_uuid')
+        ip = flask_request.headers.get('X-Forwarded-For', flask_request.remote_addr)
+        ua = flask_request.headers.get('User-Agent', '')
+        device = detect_device(ua)
+        ref = session.get('ref_source') or flask_request.args.get('ref') or 'direct'
+
+        if not user_uuid:
+            user_uuid = str(uuid.uuid4())
+            session['user_uuid'] = user_uuid
+
+        user = db.query(UserInfo).filter_by(user_uuid=user_uuid).first()
+        now = datetime.utcnow()
+        if user is None:
+            user = UserInfo(
+                user_uuid=user_uuid,
+                ip=ip,
+                user_agent=ua,
+                device=device,
+                visits_count=1,
+                first_seen=now,
+                last_seen=now,
+            )
+            db.add(user)
+        else:
+            user.visits_count = (user.visits_count or 0) + 1
+            user.ip = ip
+            user.user_agent = ua
+            user.device = device
+            user.last_seen = now
+
+        # update referrer counts (one increment per visit)
+        ref_row = db.query(Referrer).filter_by(name=ref).first()
+        if ref_row is None:
+            ref_row = Referrer(name=ref, count=1)
+            db.add(ref_row)
+        else:
+            ref_row.count = (ref_row.count or 0) + 1
+
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
+def send_contact_email(name, phone, email_addr, message_text):
+    if not GMAIL_USER or not GMAIL_APP_PASSWORD:
+        raise RuntimeError('GMAIL_USER and GMAIL_APP_PASSWORD must be set as environment variables')
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = f'Website Contact: {name}'
+    msg['From'] = GMAIL_USER
+    msg['To'] = GMAIL_USER
+    body = f"Name: {name}\nPhone: {phone}\nEmail: {email_addr}\n\nMessage:\n{message_text}"
+    msg.attach(MIMEText(body, 'plain'))
+
+    # Use SMTP SSL with app password
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+        server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+        server.sendmail(GMAIL_USER, [GMAIL_USER], msg.as_string())
+services = [
+    'Full Body Spray Painting',
+    'Dent & Damage Repairs',
+    'Rust Repairs',
+    'Body Parts Fitting',
+    'Cut & Polish',
+    'Insurance Claims'
+]
+servicesd = [
+    {
+      "icon": 'Paintbrush',
+      "title": 'Full Body Spray Painting',
+      "description": 'Give your vehicle a fresh look with our custom spray painting services. We use high-quality paints and offer a wide range of color options.'
+    },
+    {
+      "icon": 'Wrench',
+      "title": 'Dent & Damage Repairs',
+      "description": 'We expertly restore your vehicle with precision and utmost care, from minor dents to extensive body damage.'
+    },
+    {
+      "icon": 'Shield',
+      "title": 'Rust Repairs',
+      "description": "Don't let rust compromise your vehicle's appearance or safety. We handle rust removal and prevention to extend your vehicle's lifespan."
+    },
+    {
+      "icon": 'Puzzle',
+      "title": 'Body Parts Fitting',
+      "description": 'Whether you need new panels or other body parts, we ensure seamless fitting and a factory-finish appearance.'
+    },
+    {
+      "icon": 'Sparkles',
+      "title": 'Cut & Polish',
+      "description": "We bring back the original shine and smooth finish to your vehicle's paintwork with our professional cut and polish services."
+    },
+    {
+      "icon": 'FileText',
+      "title": 'Insurance Claims',
+      "description": 'We work with all major insurance companies to ensure smooth, hassle-free repair processes for your vehicle.'
+    }
+]
+reasons = [
+    {
+      "icon": "Award",
+      "title": 'Expert Craftsmanship',
+      "description": 'We deliver meticulous repairs and painting for all types of vehicles.'
+    },
+    {
+      "icon": "Package",
+      "title": 'Quality Materials',
+      "description": 'We use premium paints and parts to ensure durable, long-lasting results.'
+    },
+    {
+      "icon": "Clock",
+      "title": 'Fast Turnaround',
+      "description": 'We work efficiently to get your vehicle back on the road as quickly as possible without compromising on quality.'
+    },
+    {
+      "icon": "Users",
+      "title": 'Customer-First Approach',
+      "description": "We provide clear communication and personalized service at every stage of your vehicle's repair."
+    }
+]
+stats = [
+    { "icon": "Users", "value": '1.2K+', "label": 'Happy Clients' },
+    { "icon": "Car", "value": '2K+', "label": 'Vehicles Fixed' },
+    { "icon": "Star", "value": '5+', "label": 'Client Rating' },
+    { "icon": "Award", "value": '5+', "label": 'Years of Experience' }
+]
+posts = [
+    {
+      "img_url": 'https://salvageodysseyauto.co.nz/wp-content/uploads/2024/11/WhatsApp-Image-2024-11-28-at-15.23.26-300x158.jpeg',
+      "title": 'Transform Your Ride with Body Kits and Spoilers',
+      "date": 'November 29, 2024'
+    },
+    {
+      "img_url": 'https://salvageodysseyauto.co.nz/wp-content/uploads/2024/11/WhatsApp-Image-2024-11-21-at-13.23.20-300x158.jpeg',
+      "title": 'Expert Body Parts Fitting & Panel Beating Services in Hamilton',
+      "date": 'November 23, 2024'
+    }
+]
+
+def initialize_openai_client():
+    openai.api_key = ""
+def generate_response(prompt):
+    
+    client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message.content if response.choices else None
+chat_histories = {}
+
+@app.route('/')
+def index():
+    # Register the visit
+    try:
+        register_visit(request)
+    except Exception as e:
+        # don't break the site for analytics errors
+        print('register_visit error:', e)
+
+    return render_template('index.html', services=services, stats=stats, reasons=reasons, servicesd=servicesd, posts=posts)
+
+@app.route('/facebook')
+def facebook():
+    session['ref_source'] = 'facebook'
+    return redirect(url_for('index'))
+
+@app.route('/insta')
+def insta():
+    session['ref_source'] = 'instagram'
+    return redirect(url_for('index'))
+
+@app.route('/other')
+def other():
+    session['ref_source'] = 'other'
+    return redirect(url_for('index'))
+
+@app.route('/contact', methods=['POST'])
+def contact():
+    name = request.form.get('name')
+    phone = request.form.get('phone')
+    email_addr = request.form.get('email')
+    message_text = request.form.get('message')
+
+    try:
+        send_contact_email(name, phone, email_addr, message_text)
+        flash('Thanks! Your message was sent.', 'success')
+    except Exception as e:
+        print('send email error:', e)
+        flash('Could not send message. Check server email configuration.', 'error')
+
+    return redirect(url_for('index'))
+
+@app.route('/admin')
+def admin():
+    db = SessionLocal()
+    try:
+        total_users = db.query(UserInfo).count()
+        total_visits = db.query(UserInfo).with_entities(func.sum(UserInfo.visits_count)).scalar() or 0
+        referrers = {r.name: r.count for r in db.query(Referrer).all()}
+        users = db.query(UserInfo).order_by(UserInfo.last_seen.desc()).limit(200).all()
+    finally:
+        db.close()
+
+    ref_labels = list(referrers.keys())
+    ref_values = [referrers[k] for k in ref_labels]
+
+    # Blog posts summary (from in-memory posts list)
+    try:
+        blog_posts_count = len(posts)
+        recent_posts = posts[:3]
+    except Exception:
+        blog_posts_count = 0
+        recent_posts = []
+
+    # Tyres summary (from CSV upload)
+    try:
+        tyres = load_tires_from_csv()
+        tyres_count = len(tyres)
+        recent_tyres = tyres[:3]
+    except Exception:
+        tyres_count = 0
+        recent_tyres = []
+
+    return render_template('admin.html',
+                            total_users=total_users,
+                            total_visits=total_visits,
+                            ref_labels=json.dumps(ref_labels),
+                            ref_values=json.dumps(ref_values),
+                            users=users,
+                            blog_posts_count=blog_posts_count,
+                            recent_posts=recent_posts,
+                            tyres_count=tyres_count,
+                            recent_tyres=recent_tyres)
+
+@app.route('/admin/data')
+def admin_data():
+    db = SessionLocal()
+    try:
+        referrers = {r.name: r.count for r in db.query(Referrer).all()}
+    finally:
+        db.close()
+    return jsonify(referrers)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def load_tires_from_csv():
+    tires_file = os.path.join(app.config['UPLOAD_FOLDER'], 'tyres.csv')
+    tires = []
+    if os.path.exists(tires_file):
+        try:
+            with open(tires_file, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                tires = list(reader)
+        except Exception as e:
+            print(f"Error reading tires CSV: {e}")
+    return tires
+
+@app.route('/blog/body-kits-and-spoilers')
+def blog_body_kits():
+    return render_template('blog/body-kits-spoilers.html')
+
+@app.route('/blog/body-parts-fitting')
+def blog_body_parts():
+    return render_template('blog/body-parts-fitting.html')
+
+@app.route('/services/panel-beater')
+def panel_beater():
+    return render_template('services/panel-beater.html')
+
+@app.route('/services/panel-beater/body-parts')
+def panel_beater_body_parts():
+    return render_template('services/panel-beater-body-parts.html')
+
+@app.route('/services/panel-beater/spoilers')
+def panel_beater_spoilers():
+    return render_template('services/panel-beater-spoilers.html')
+
+@app.route('/services/panel-beater/cut-polish')
+def panel_beater_cut_polish():
+    return render_template('services/panel-beater-cut-polish.html')
+
+@app.route('/services/tyres')
+def tyres():
+    return render_template('services/tyres.html')
+
+@app.route('/services/tyres/shop')
+def tyres_shop():
+    return render_template('services/tyres-shop.html')
+
+@app.route('/services/tyres/used-tyres')
+def used_tyres():
+    tires = load_tires_from_csv()
+    sizes = sorted(list(set([t.get('size', '') for t in tires if t.get('size')])))
+    return render_template('services/used-tyres.html', tires=tires, sizes=sizes)
+
+@app.route('/services/tyres/used-tyres/filter', methods=['POST'])
+def filter_tires():
+    size = request.form.get('size', '')
+    tires = load_tires_from_csv()
+
+    if size:
+        tires = [t for t in tires if t.get('size', '').lower() == size.lower()]
+
+    return render_template('services/used-tyres-results.html', tires=tires, selected_size=size)
+
+@app.route('/admin/tyres/upload', methods=['GET', 'POST'])
+def upload_tyres():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part', 'error')
+            return redirect(request.url)
+
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file', 'error')
+            return redirect(request.url)
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename('tyres.csv')
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flash('Tyres CSV uploaded successfully!', 'success')
+            return redirect(url_for('used_tyres'))
+        else:
+            flash('Only CSV files are allowed', 'error')
+            return redirect(request.url)
+
+    return render_template('admin/upload-tyres.html')
+
+@app.route('/services/wrecked-cars')
+def wrecked_cars():
+    return render_template('services/wrecked-cars.html')
+
+@app.route('/services/wrecked-cars/submit', methods=['POST'])
+def submit_wrecked_car():
+    name = request.form.get('name')
+    phone = request.form.get('phone')
+    email_addr = request.form.get('email')
+    car_make = request.form.get('car_make')
+    car_model = request.form.get('car_model')
+    car_year = request.form.get('car_year')
+    condition = request.form.get('condition')
+    message = request.form.get('message')
+
+    try:
+        body = f"""
+New Wrecked Car Submission:
+
+Name: {name}
+Phone: {phone}
+Email: {email_addr}
+
+Vehicle Details:
+Make: {car_make}
+Model: {car_model}
+Year: {car_year}
+Condition: {condition}
+
+Message: {message}
+        """
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = f'Wrecked Car Submission from {name}'
+        msg['From'] = GMAIL_USER
+        msg['To'] = GMAIL_USER
+        msg.attach(MIMEText(body, 'plain'))
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+            server.sendmail(GMAIL_USER, [GMAIL_USER], msg.as_string())
+
+        flash('Thanks! Your wrecked car submission was received. We\'ll contact you soon.', 'success')
+    except Exception as e:
+        print('send email error:', e)
+        flash('Could not send submission. Please try again.', 'error')
+
+    return redirect(url_for('wrecked_cars'))
+@app.route('/contact_page')
+def contacts():
+    return render_template('contact.html')
+
+
+@app.route('/team')
+def team():
+    return render_template('team.html')
+
+@app.route('/panel-beaters-hamilton')
+def seo_panel_beaters():
+    return render_template('panel-beaters-hamilton.html')
+
+@app.route('/car-painting-hamilton')
+def seo_car_painting():
+    return render_template('car-painting-hamilton.html')
+
+@app.route('/sell-wrecked-car-hamilton')
+def seo_sell_wrecked():
+    return render_template('sell-wrecked-car-hamilton.html')
+
+@app.route('/used-tyres-hamilton')
+def seo_used_tyres():
+    tires = load_tires_from_csv()
+    sizes = sorted(list(set([t.get('size', '') for t in tires if t.get('size')])))
+    return render_template('used-tyres-hamilton.html', tires=tires, sizes=sizes)
+
+@app.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    base_urls = [
+        url_for('index', _external=True),
+        url_for('panel_beater', _external=True),
+        url_for('tyres', _external=True),
+        url_for('wrecked_cars', _external=True),
+        url_for('contacts', _external=True),
+        url_for('blog_body_kits', _external=True),
+        url_for('blog_body_parts', _external=True),
+        url_for('panel_beater_body_parts', _external=True),
+        url_for('panel_beater_spoilers', _external=True),
+        url_for('panel_beater_cut_polish', _external=True),
+        url_for('tyres_shop', _external=True),
+        url_for('used_tyres', _external=True),
+        url_for('seo_panel_beaters', _external=True),
+        url_for('seo_car_painting', _external=True),
+        url_for('seo_sell_wrecked', _external=True),
+        url_for('seo_used_tyres', _external=True),
+    ]
+
+    xml_items = ''
+    for u in base_urls:
+        xml_items += f"<url><loc>{u}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n"
+
+    sitemap_xml = f'<?xml version="1.0" encoding="UTF-8"?>\n'
+    sitemap_xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    sitemap_xml += xml_items
+    sitemap_xml += '</urlset>'
+
+    response = make_response(sitemap_xml)
+    response.headers['Content-Type'] = 'application/xml'
+    return response
+
+@app.route('/ai/chatbot', methods=['POST'])
+def ai_chatbot():
+    user_message = request.json.get('message')
+    response = generate_response(user_message)
+    return jsonify({'response': response})
+@app.route('/chatbot')
+def chatbot(foldername):
+    response = generate_response("hi")
+    return render_template('chatbot.html', response=response)

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Salvage Odyssey Auto</title>
+    <link rel="icon" type="image/jpg" href="/static/logo-removebg.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="manifest" href="/static/manifest.json">
+    <style>
+      /* small override to keep contact link normal weight */
+      .nav-contact { font-weight: 400; }
+    </style>
+</head>
+<body class="min-h-screen bg-white">
+  <!-- Top Navigation (kept consistent with index) -->
+  <nav class="bg-black text-white sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <div class="flex-shrink-0 flex items-center">
+          <a href="/" class="flex items-center">
+            <div class="w-16 h-16 rounded-lg flex items-center justify-center">
+              <img src="/static/logo-removebg.png" alt="logo">
+            </div>
+            <span class="ml-3 text-xl hidden sm:block">Salvage Odyssey Auto</span>
+          </a>
+        </div>
+
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/" class="hover:text-red-600 transition-colors duration-200 font-medium">About Us</a>
+          <div class="relative group">
+            <button class="hover:text-red-600 transition-colors duration-200 font-medium flex items-center gap-1">Services <i data-lucide="ChevronDown" class="w-4 h-4"></i></button>
+            <div class="absolute left-0 mt-2 w-64 bg-white text-black rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <a href="/services/panel-beater" class="block px-4 py-3 hover:bg-red-600 hover:text-white transition-colors duration-200 rounded-t-lg">Panel Beater & Repair</a>
+                <a href="/services/tyres" class="block px-4 py-3 hover:bg-red-600 hover:text-white transition-colors duration-200">Tyres</a>
+                <a href="/services/wrecked-cars" class="block px-4 py-3 hover:bg-red-600 hover:text-white transition-colors duration-200 rounded-b-lg">Wrecked Cars</a>
+            </div>
+          </div>
+          <a href="/contact_page" class="nav-contact hover:text-red-600 transition-colors duration-200">Contact Us</a>
+        </div>
+
+        <div class="md:hidden">
+          <button class="text-white hover:text-red-600 transition-colors">
+            <i data-lucide="Menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header with background image and intro -->
+  <header class="relative py-24 bg-cover bg-center text-white" style="background-image:url('/static/img/1.jpg')">
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Start the conversation</h1>
+      <p class="max-w-3xl mx-auto text-lg text-gray-100">Let's establish a great relationship and business. We're ready to help — reach out and we'll get back to you shortly.</p>
+    </div>
+  </header>
+
+  <!-- Three contact columns -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-6 text-center">
+        <div class="bg-white p-6 rounded-xl shadow">
+          <i data-lucide="MapPin" class="w-10 h-10 text-red-600 mx-auto mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Our Workshop</h3>
+          <p class="text-gray-700">109 Colombo Street<br>Frankton<br>Hamilton</p>
+        </div>
+
+        <div class="p-6 rounded-xl shadow bg-red-600 text-white">
+          <i data-lucide="Mail" class="w-10 h-10 mx-auto mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Email Us</h3>
+          <p>odysseyauto.mobile393@gmail.com</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow">
+          <i data-lucide="Phone" class="w-10 h-10 text-red-600 mx-auto mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Call Us</h3>
+          <p>020 4136 3660</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image left, form right -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="rounded-xl overflow-hidden">
+          <img src="/static/painting_car.jpg" alt="Workshop" class="w-full h-full object-cover">
+        </div>
+
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg">
+          <h2 class="text-2xl font-bold mb-4">Send us a message</h2>
+          <p class="text-gray-700 mb-6">We are more than just a repair shop – we are your trusted partners in vehicle care. Whether you’re dealing with damage from an accident, rust issues, or simply want to refresh your vehicle’s appearance, our team is here to help. Get in touch with us today and experience the Mason Panel & Paint difference.</p>
+
+          <form action="/contact" method="post" class="space-y-4">
+            <input type="text" name="name" placeholder="Name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-red-600">
+            <input type="tel" name="phone" placeholder="Phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-red-600">
+            <input type="email" name="email" placeholder="Email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-red-600">
+            <textarea name="message" rows="5" placeholder="Your message" required class="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-red-600 resize-none"></textarea>
+            <button type="submit" class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Large map iframe -->
+  <section class="py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="rounded-xl overflow-hidden shadow">
+        <iframe width="100%" height="500" frameborder="0" style="border:0" allowfullscreen
+          src="https://maps.google.com/maps?q=109%20Colombo%20Street%20Frankton%20Hamilton&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Assistance CTA -->
+  <section class="py-12 bg-gray-900 text-white text-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h3 class="text-2xl font-bold mb-2">Need assistance?</h3>
+      <p class="text-lg">Reach out to our support team at</p>
+      <a href="tel:02041363660" class="text-3xl font-bold text-red-500 hover:text-red-400 transition">020 4136 3660</a>
+    </div>
+  </section>
+
+  <!-- Footer (kept similar to index) -->
+  <footer class="bg-black text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <p class="text-white leading-relaxed">We are your trusted local expert in vehicle repair, restoration, and spray painting. With years of experience in the industry, we pride ourselves on delivering top-quality service and results that exceed customer expectations.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">Contact</h3>
+          <ul class="space-y-2">
+            <li>109 Colombo Street, Frankton, Hamilton</li>
+            <li>odysseyauto.mobile393@gmail.com</li>
+            <li>020 4136 3660</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">Get Started</h3>
+          <a href="/" class="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">Get Started</a>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 pt-8 text-center">
+        <p class="text-gray-400">Copyright © 2026 Salvage Odyssey Auto, All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

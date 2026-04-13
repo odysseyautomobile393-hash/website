@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tyre Shop - Buy & Sell - Salvage Odyssey Auto</title>
+    <link rel="icon" type="image/jpg" href="/static/logo-removebg.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="min-h-screen bg-white">
+        <!-- Navigation -->
+        <nav class="bg-black text-white sticky top-0 z-50 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <div class="w-16 h-16 rounded-lg flex items-center justify-center">
+                            <img src="/static/logo-removebg.png" alt="Logo" class="w-12 h-12">
+                        </div>
+                        <span class="ml-3 text-xl font-bold hidden sm:block">Salvage Odyssey Auto</span>
+                    </a>
+                    <div class="flex items-center gap-4">
+                        <a href="/services/tyres" class="text-gray-300 hover:text-red-600">← Back to Tyres</a>
+                        <a href="/" class="text-red-600 hover:text-red-700">Home</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-red-600 to-red-700 text-white py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Tyre Shop - Buy & Sell</h1>
+                <p class="text-lg text-red-100">Quality new tyres at competitive prices</p>
+            </div>
+        </section>
+
+        <!-- Shop Content -->
+        <section class="py-16 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Welcome to Our Tyre Shop</h2>
+                <p class="text-gray-700 leading-relaxed mb-8">
+                    Looking for top-quality new tyres? Our shop offers a comprehensive selection of premium and budget-friendly options for all vehicle types. Whether you drive a sedan, SUV, truck, or sports car, we have the perfect tyres for your needs.
+                </p>
+
+                <div class="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Why Buy From Us?</h3>
+                    <ul class="grid md:grid-cols-2 gap-4">
+                        <li class="flex items-start">
+                            <span class="text-red-600 font-bold mr-3">✓</span>
+                            <span class="text-gray-700">Wide selection of major brands</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-600 font-bold mr-3">✓</span>
+                            <span class="text-gray-700">Competitive pricing and discounts</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-600 font-bold mr-3">✓</span>
+                            <span class="text-gray-700">Expert fitting and balancing</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-600 font-bold mr-3">✓</span>
+                            <span class="text-gray-700">Professional installation service</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-600 font-bold mr-3">✓</span>
+                            <span class="text-gray-700">Warranty on all new tyres</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-600 font-bold mr-3">✓</span>
+                            <span class="text-gray-700">Expert consultation available</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">Available Brands</h3>
+                <p class="text-gray-700 mb-4">
+                    We stock tyres from leading manufacturers including Michelin, Goodyear, Bridgestone, Continental, Dunlop, Pirelli, and many more. Our inventory includes options for every budget and driving style.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-gray-900 mb-3">Premium Brands</h4>
+                        <p class="text-gray-700 text-sm mb-3">Michelin, Continental, Pirelli, Bridgestone</p>
+                        <p class="text-gray-600 text-sm">Top-tier performance, durability, and safety</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-gray-900 mb-3">Budget-Friendly Options</h4>
+                        <p class="text-gray-700 text-sm mb-3">Great value without compromising quality</p>
+                        <p class="text-gray-600 text-sm">Affordable solutions for all vehicle types</p>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Services We Offer</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-8">
+                    <li>Tyre selection assistance based on vehicle needs</li>
+                    <li>Professional tyre installation and fitting</li>
+                    <li>Wheel balancing and alignment</li>
+                    <li>Tyre rotation and maintenance</li>
+                    <li>Puncture repair and emergency services</li>
+                    <li>Trade-in of old tyres</li>
+                </ul>
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-6">Request a tyre</h3>
+                    <form action="/contact" method="post" class="space-y-4">
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Name"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                            required/>
+                        <input
+                            type="tel"
+                            name="phone"
+                            placeholder="Phone No"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                            required/>
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                            required/>
+                        <input
+                            type="text"
+                            name="Tyre_size"
+                            placeholder="Tyre size e.g. 215/45R17"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none"
+                            required/>
+                        <textarea
+                            name="message"
+                            placeholder="Message"
+                            rows="4"
+                            class="w-full px-4 py-3 bg-white/90 border border-white/30 rounded-lg focus:ring-2 focus:ring-red-600 outline-none resize-none"
+                            required></textarea>
+                        <button
+                            type="submit"
+                            class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition shadow-lg">
+                            Request a Call Back
+                        </button>
+                    </form>
+                </div>
+                <div class="bg-red-50 border-l-4 border-red-600 p-6 mb-8">
+                    <p class="text-gray-900 font-semibold mb-2">Need Help Choosing?</p>
+                    <p class="text-gray-700">Call us at <a href="tel:0204136 3660" class="text-red-600 font-bold">020 4136 3660</a> to speak with our tyre experts and get personalized recommendations.</p>
+                </div>
+
+                <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-6">
+                    <h4 class="font-bold text-gray-900 mb-2">Looking for Used Tyres?</h4>
+                    <p class="text-gray-700 mb-4">Check out our extensive selection of quality used tyres with excellent value and durability.</p>
+                    <a href="/services/tyres/used-tyres" class="inline-block text-red-600 font-semibold hover:text-red-700">
+                        Browse Used Tyres →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-16 bg-red-600 text-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-4">Get Quality Tyres Today</h2>
+                <p class="text-lg mb-8">Expert selection and professional installation</p>
+                <a href="/#contact" class="inline-block bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    Contact for Quote
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black text-white py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-gray-400 mb-2">© 2026 Salvage Odyssey Auto. All rights reserved.</p>
+                <p class="text-gray-500 text-sm">109 Colombo Street, Frankton, Hamilton</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

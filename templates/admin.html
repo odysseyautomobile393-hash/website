@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin — Salvage Odyssey</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/jpg" href="static/logo-removebg.png">
+    <link rel="manifest" href="/static/admin_manifest.json">
+</head>
+<body class="bg-gray-100">
+  <header class="bg-black text-white">
+    <div class="max-w-6xl mx-auto flex items-center justify-between p-4">
+      <div class="flex items-center gap-4">
+        <a href="/" class="text-xl font-bold">Salvage Odyssey</a>
+        <nav class="hidden md:flex gap-4">
+          <a href="/" class="hover:underline">Home</a>
+          <a href="/services/panel-beater" class="hover:underline">Services</a>
+          <a href="/admin/tyres/upload" class="hover:underline">Upload Tyres</a>
+          <a href="/blog/body-kits-and-spoilers" class="hover:underline">Blog</a>
+        </nav>
+      </div>
+      <div>
+        <a href="/admin" class="text-sm bg-red-600 px-3 py-1 rounded">Admin Home</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4">Admin Dashboard</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-white p-4 rounded shadow">
+        <div class="text-sm text-gray-600">Visits</div>
+        <div class="text-2xl font-bold">{{ total_visits }}</div>
+        <div class="mt-3 text-sm">
+          <div class="font-semibold">Recent users</div>
+          <ul class="list-disc pl-5 text-xs mt-1">
+            {% for u in users[:3] %}
+              <li>{{ u.user_uuid }} — {{ u.visits_count }} visits</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded shadow">
+        <div class="text-sm text-gray-600">Blog Posts</div>
+        <div class="text-2xl font-bold">{{ blog_posts_count }}</div>
+        <div class="mt-3 text-sm">
+          <div class="font-semibold">Latest posts</div>
+          <ul class="list-disc pl-5 text-xs mt-1">
+            {% for p in recent_posts %}
+              <li>{{ p.title }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded shadow">
+        <div class="text-sm text-gray-600">Tyres CSV</div>
+        <div class="text-2xl font-bold">{{ tyres_count }}</div>
+        <div class="mt-3 text-sm">
+          <div class="font-semibold">Recent tyres</div>
+          <ul class="list-disc pl-5 text-xs mt-1">
+            {% for t in recent_tyres %}
+              <li>{{ t.make or 'Tyre' }} — {{ t.size or 'Unknown' }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded shadow mb-6">
+      <h2 class="text-xl font-semibold mb-4">Referrer Breakdown</h2>
+      <canvas id="refChart" height="120"></canvas>
+    </div>
+
+    <div class="bg-white p-6 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Recent Users</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left">
+          <thead>
+            <tr>
+              <th class="px-3 py-2">UUID</th>
+              <th class="px-3 py-2">Visits</th>
+              <th class="px-3 py-2">Device</th>
+              <th class="px-3 py-2">First Seen</th>
+              <th class="px-3 py-2">Last Seen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for u in users %}
+            <tr class="border-t">
+              <td class="px-3 py-2">{{ u.user_uuid }}</td>
+              <td class="px-3 py-2">{{ u.visits_count }}</td>
+              <td class="px-3 py-2">{{ u.device }}</td>
+              <td class="px-3 py-2">{{ u.first_seen }}</td>
+              <td class="px-3 py-2">{{ u.last_seen }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const labels = {{ ref_labels|safe }};
+    const values = {{ ref_values|safe }};
+    const ctx = document.getElementById('refChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{ data: values, backgroundColor: ['#ef4444', '#60a5fa', '#f97316', '#a78bfa', '#34d399'] }]
+      }
+    });
+  </script>
+</body>
+</html>
