@@ -200,12 +200,12 @@ stats = [
 ]
 posts = [
     {
-      "img_url": 'https://salvageodysseyauto.co.nz/wp-content/uploads/2024/11/WhatsApp-Image-2024-11-28-at-15.23.26-300x158.jpeg',
+      "img_url": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_kits.jpeg',
       "title": 'Transform Your Ride with Body Kits and Spoilers',
       "date": 'November 29, 2024'
     },
     {
-      "img_url": 'https://salvageodysseyauto.co.nz/wp-content/uploads/2024/11/WhatsApp-Image-2024-11-21-at-13.23.20-300x158.jpeg',
+      "img_url": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_fitting.jpeg',
       "title": 'Expert Body Parts Fitting & Panel Beating Services in Hamilton',
       "date": 'November 23, 2024'
     }
