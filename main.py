@@ -35,7 +35,14 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 # Database is already created in Supabase, no need to create it
 # Tables will be created when engine is initialized
 
-engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,
+    connect_args={
+        "sslmode": "require",
+        "connect_timeout": 10
+    }
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
