@@ -144,33 +144,38 @@ services = [
 servicesd = [
     {
       "icon": 'Paintbrush',
+      "url": '/services/panel-beater/spoilers',
+      "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/car%20painting.jpg',
       "title": 'Full Body Spray Painting',
       "description": 'Give your vehicle a fresh look with our custom spray painting services. We use high-quality paints and offer a wide range of color options.'
     },
     {
       "icon": 'Wrench',
+      "url": '/services/panel-beater/body-parts',
+      "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/bump_repair.jpg',
       "title": 'Dent & Damage Repairs',
       "description": 'We expertly restore your vehicle with precision and utmost care, from minor dents to extensive body damage.'
     },
     {
       "icon": 'Shield',
+      "url": '/services/panel-beater/rust-repairs',
+      "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/body_fix.jpg',
       "title": 'Rust Repairs',
       "description": "Don't let rust compromise your vehicle's appearance or safety. We handle rust removal and prevention to extend your vehicle's lifespan."
     },
     {
       "icon": 'Puzzle',
+      "url": '/services/panel-beater/body-parts',
+      "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/repair.jpg',
       "title": 'Body Parts Fitting',
       "description": 'Whether you need new panels or other body parts, we ensure seamless fitting and a factory-finish appearance.'
     },
     {
       "icon": 'Sparkles',
+      "url": '/services/panel-beater/cut-and-polish',
+      "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_fitting.jpeg',
       "title": 'Cut & Polish',
       "description": "We bring back the original shine and smooth finish to your vehicle's paintwork with our professional cut and polish services."
-    },
-    {
-      "icon": 'FileText',
-      "title": 'Insurance Claims',
-      "description": 'We work with all major insurance companies to ensure smooth, hassle-free repair processes for your vehicle.'
     }
 ]
 reasons = [
