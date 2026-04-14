@@ -603,7 +603,7 @@ def add_watermark(response):
     </span>
 </a>
 <a href="mailto:odyssey.auto.mobile393@gmail.com"
-   class="fixed left-0 top-[75%] -translate-y-1/2
+   class="fixed left-0 top-[65%] -translate-y-1/2
           bg-gray-700 text-white p-3 rounded-r-lg shadow-lg
           hover:px-5 hover:bg-gray-800
           transition-all duration-300
