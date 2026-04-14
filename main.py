@@ -540,83 +540,80 @@ def add_watermark(response):
     if "text/html" in response.content_type:
         content = response.get_data(as_text=True)
         widget = """
-<a href="https://www.facebook.com/salvageodysseyauto"
-   target="_blank"
-   class="fixed left-0 top-[50%] -translate-y-1/2 bg-blue-600 text-white p-3 rounded-r-lg shadow-lg hover:px-5 hover:bg-blue-700 transition-all duration-300 flex items-center gap-2 group">
+<div class="fixed left-0 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-50">
+    <a href="https://www.facebook.com/salvageodysseyauto"
+    target="_blank"
+    class="bg-blue-600 text-white p-3 rounded-r-lg shadow-lg
+              hover:px-5 hover:bg-blue-700 transition-all duration-300
+              flex items-center gap-2 group">
 
-    <!-- icon -->
-    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-    </svg>
+        <!-- icon -->
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
 
-    <!-- text (only shows on hover) -->
-    <span class="hidden group-hover:block text-sm font-semibold">
-        Facebook
-    </span>
+        <!-- text (only shows on hover) -->
+        <span class="hidden group-hover:block text-sm font-semibold">
+            Facebook
+        </span>
 
-</a>
-<a href="https://www.instagram.com/odysseyauto.mobile393/"
-   target="_blank"
-   class="fixed left-0 top-[45%] -translate-y-1/2 
-          bg-gradient-to-tr from-[#f56040] via-[#c13584] to-[#405de6]
-          text-white p-3 rounded-r-lg shadow-lg
-          hover:px-5 transition-all duration-300
-          flex items-center gap-2 group">
+    </a>
+    <a href="https://www.instagram.com/odysseyauto.mobile393/"
+    target="_blank"
+    class="bg-gradient-to-tr from-[#f56040] via-[#c13584] to-[#405de6]
+              text-white p-3 rounded-r-lg shadow-lg
+              hover:px-5 transition-all duration-300
+              flex items-center gap-2 group">
 
-    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm4.25 5.5a4.75 4.75 0 1 0 0 9.5 4.75 4.75 0 0 0 0-9.5zm0 1.75a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4.75-.88a1.13 1.13 0 1 0 0-2.25 1.13 1.13 0 0 0 0 2.25z"/>
-    </svg>
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm4.25 5.5a4.75 4.75 0 1 0 0 9.5 4.75 4.75 0 0 0 0-9.5zm0 1.75a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4.75-.88a1.13 1.13 0 1 0 0-2.25 1.13 1.13 0 0 0 0 2.25z"/>
+        </svg>
 
-    <span class="hidden group-hover:block text-sm font-semibold">
-        Instagram
-    </span>
-</a>
-<a href="https://maps.google.com/?q=109+Colombo+Street+Frankton+Hamilton"
-   target="_blank"
-   class="fixed left-0 top-[55%] -translate-y-1/2 
-          bg-green-600 text-white p-3 rounded-r-lg shadow-lg
-          hover:px-5 hover:bg-green-700
-          transition-all duration-300
-          flex items-center gap-2 group">
+        <span class="hidden group-hover:block text-sm font-semibold">
+            Instagram
+        </span>
+    </a>
+    <a href="https://maps.google.com/?q=109+Colombo+Street+Frankton+Hamilton"
+    target="_blank"
+    class="bg-green-600 text-white p-3 rounded-r-lg shadow-lg
+              hover:px-5 hover:bg-green-700 transition-all duration-300
+              flex items-center gap-2 group">
 
-    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
-    </svg>
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+        </svg>
 
-    <span class="hidden group-hover:block text-sm font-semibold">
-        Location
-    </span>
-</a>
-<a href="tel:02041363660"
-   class="fixed left-0 top-[60%] -translate-y-1/2
-          bg-red-600 text-white p-3 rounded-r-lg shadow-lg
-          hover:px-5 hover:bg-red-700
-          transition-all duration-300
-          flex items-center gap-2 group">
+        <span class="hidden group-hover:block text-sm font-semibold">
+            Location
+        </span>
+    </a>
+    <a href="tel:02041363660"
+    class="bg-red-600 text-white p-3 rounded-r-lg shadow-lg
+              hover:px-5 hover:bg-red-700 transition-all duration-300
+              flex items-center gap-2 group">
 
-    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-        <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V21a1 1 0 01-1 1C10.07 22 2 13.93 2 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.25 1l-2.2 2.2z"/>
-    </svg>
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V21a1 1 0 01-1 1C10.07 22 2 13.93 2 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.25 1l-2.2 2.2z"/>
+        </svg>
 
-    <span class="hidden group-hover:block text-sm font-semibold">
-        Call Us
-    </span>
-</a>
-<a href="mailto:odyssey.auto.mobile393@gmail.com"
-   class="fixed left-0 top-[65%] -translate-y-1/2
-          bg-gray-700 text-white p-3 rounded-r-lg shadow-lg
-          hover:px-5 hover:bg-gray-800
-          transition-all duration-300
-          flex items-center gap-2 group">
+        <span class="hidden group-hover:block text-sm font-semibold">
+            Call Us
+        </span>
+    </a>
+    <a href="mailto:odyssey.auto.mobile393@gmail.com"
+    class="bg-gray-700 text-white p-3 rounded-r-lg shadow-lg
+              hover:px-5 hover:bg-gray-800 transition-all duration-300
+              flex items-center gap-2 group">
 
-    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-        <path d="M20 4H4a2 2 0 00-2 2v.01l10 6.99 10-6.99V6a2 2 0 00-2-2zm0 4.24l-8.4 5.88a1 1 0 01-1.2 0L2 8.24V18a2 2 0 002 2h16a2 2 0 002-2V8.24z"/>
-    </svg>
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M20 4H4a2 2 0 00-2 2v.01l10 6.99 10-6.99V6a2 2 0 00-2-2zm0 4.24l-8.4 5.88a1 1 0 01-1.2 0L2 8.24V18a2 2 0 002 2h16a2 2 0 002-2V8.24z"/>
+        </svg>
 
-    <span class="hidden group-hover:block text-sm font-semibold">
-        Email Us
-    </span>
-</a>
+        <span class="hidden group-hover:block text-sm font-semibold">
+            Email Us
+        </span>
+    </a>
+</div>
 <!-- Chat Button -->
 <button id="chat-open"
 style="position:fixed;bottom:20px;right:20px;z-index:9999;
