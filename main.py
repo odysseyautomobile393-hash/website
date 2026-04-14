@@ -542,7 +542,7 @@ def add_watermark(response):
         widget = """
 <a href="https://www.facebook.com/salvageodysseyauto"
    target="_blank"
-   class="fixed left-0 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-3 rounded-r-lg shadow-lg hover:px-5 hover:bg-blue-700 transition-all duration-300 flex items-center gap-2 group">
+   class="fixed left-0 top-[50%] -translate-y-1/2 bg-blue-600 text-white p-3 rounded-r-lg shadow-lg hover:px-5 hover:bg-blue-700 transition-all duration-300 flex items-center gap-2 group">
 
     <!-- icon -->
     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -573,7 +573,7 @@ def add_watermark(response):
 </a>
 <a href="https://maps.google.com/?q=109+Colombo+Street+Frankton+Hamilton"
    target="_blank"
-   class="fixed left-0 top-[60%] -translate-y-1/2 
+   class="fixed left-0 top-[55%] -translate-y-1/2 
           bg-green-600 text-white p-3 rounded-r-lg shadow-lg
           hover:px-5 hover:bg-green-700
           transition-all duration-300
@@ -588,7 +588,7 @@ def add_watermark(response):
     </span>
 </a>
 <a href="tel:02041363660"
-   class="fixed left-0 top-[70%] -translate-y-1/2
+   class="fixed left-0 top-[60%] -translate-y-1/2
           bg-red-600 text-white p-3 rounded-r-lg shadow-lg
           hover:px-5 hover:bg-red-700
           transition-all duration-300
@@ -603,7 +603,7 @@ def add_watermark(response):
     </span>
 </a>
 <a href="mailto:odyssey.auto.mobile393@gmail.com"
-   class="fixed left-0 top-[80%] -translate-y-1/2
+   class="fixed left-0 top-[75%] -translate-y-1/2
           bg-gray-700 text-white p-3 rounded-r-lg shadow-lg
           hover:px-5 hover:bg-gray-800
           transition-all duration-300
