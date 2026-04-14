@@ -178,6 +178,14 @@ servicesd = [
       "description": "We bring back the original shine and smooth finish to your vehicle's paintwork with our professional cut and polish services."
     }
 ]
+
+    # {
+    #   "icon": 'FileText',
+    #   "url": '/services/panel-beater/insurance-claims',
+    #   "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/insurance.jpg',
+    #   "title": 'Insurance Claims',
+    #   "description": 'We work with all major insurance companies to ensure smooth, hassle-free repair processes for your vehicle.'
+    # }
 reasons = [
     {
       "icon": "Award",
