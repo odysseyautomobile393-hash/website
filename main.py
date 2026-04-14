@@ -540,7 +540,22 @@ def add_watermark(response):
     if "text/html" in response.content_type:
         content = response.get_data(as_text=True)
         widget = """
-        
+<a href="https://www.facebook.com/salvageodysseyauto"
+   target="_blank"
+   class="fixed left-0 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-3 rounded-r-lg shadow-lg hover:px-5 hover:bg-blue-700 transition-all duration-300 flex items-center gap-2 group">
+
+    <!-- icon -->
+    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+    </svg>
+
+    <!-- text (only shows on hover) -->
+    <span class="hidden group-hover:block text-sm font-semibold">
+        Facebook
+    </span>
+
+</a>
+
 <!-- Chat Button -->
 <button id="chat-open"
 style="position:fixed;bottom:20px;right:20px;z-index:9999;
