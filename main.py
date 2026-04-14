@@ -13,13 +13,9 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, f
 from sqlalchemy.orm import declarative_base, sessionmaker
 import openai
 # Supabase PostgreSQL settings
-SUPABASE_HOST = 'db.zwlhdzpybfsqpmzcslhc.supabase.co'
-SUPABASE_PORT = 5432
-SUPABASE_USER = 'postgres'
-SUPABASE_PASSWORD = 'Sayed$786'
-SUPABASE_DB = 'postgres'
+
 # SQLAlchemy database URL (PostgreSQL via psycopg2)
-DATABASE_URL = f"postgresql+psycopg2://{SUPABASE_USER}:{SUPABASE_PASSWORD}@{SUPABASE_HOST}:{SUPABASE_PORT}/{SUPABASE_DB}"
+DATABASE_URL = os.environ.get("DATABASE_URL")
 GMAIL_USER = "odysseyauto.mobile393@gmail.com"
 GMAIL_APP_PASSWORD = "upog lspx ecyr hrzg"  # Google App Password
 app = Flask(__name__)
