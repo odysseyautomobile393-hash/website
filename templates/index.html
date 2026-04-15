@@ -471,9 +471,15 @@
                 {% for post in posts %}
                     <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
                         <div class="bg-gray-200 h-64 flex items-center justify-center">
-                            {% set image_list = post.img_urls | from_json %}
-                            {{image_list}}
-                            <img src="{{ image_list[0] }}" class="w-full h-full object-cover">
+                            {% if post.title == "Transform Your Ride with Body Kits and Spoilers" %}
+                            <img src="https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_kits.jpeg" class="w-full h-full object-cover">
+                            {% elif post.title == "Expert Body Parts Fitting & Panel Beating Services in Hamilton" %}
+                            <img src="https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_fitting.jpeg" class="w-full h-full object-cover">
+                            {% else %}
+                                {% set image_list = post.img_urls | from_json %}
+                                {{image_list}}
+                                <img src="{{ image_list[0] }}" class="w-full h-full object-cover">
+                            {% endif %}
                         </div>
                         <div class="p-6">
                             <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ post.title }}</h3>
