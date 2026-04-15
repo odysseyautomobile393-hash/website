@@ -39,7 +39,7 @@
                                             <a href="{{ category.link }}" class="block text-lg font-semibold text-gray-900 hover:text-red-600">{{ category.name }}</a>
                                             <p class="mt-2 text-sm text-gray-600">{{ category.description }}</p>
                                             <div class="mt-4 space-y-2">
-                                                {% for item in category.items %}
+                                                {% for item in category['items'] %}
                                                     <a href="{{ item.link }}" class="block text-sm text-gray-700 hover:text-red-600">{{ item.name }}</a>
                                                 {% endfor %}
                                             </div>

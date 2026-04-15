@@ -253,7 +253,8 @@ def register_visit(flask_request):
     try:
         # get or create user UUID in session
         user_uuid = session.get('user_uuid')
-        ip = flask_request.headers.get('X-Forwarded-For', flask_request.remote_addr)
+        ip_header = flask_request.headers.get('X-Forwarded-For', flask_request.remote_addr)
+        ip = ip_header.split(',')[0].strip() if ip_header else ''
         ua = flask_request.headers.get('User-Agent', '')
         device = detect_device(ua)
         ref = session.get('ref_source') or flask_request.args.get('ref') or 'direct'
