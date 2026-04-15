@@ -509,15 +509,13 @@ def index():
         raw_posts = db.query(BlogPost).order_by(BlogPost.created_at.desc()).all()
         posts = []
         for post in raw_posts:
-            image_list = json.loads(post.img_urls or '[]')
             posts.append({
                 'title': post.title,
                 'slug': post.slug,
-                'img_url': image_list[0] if image_list else '',
+                'img_url': post.img_urls,
                 'created_at': post.created_at,
                 'url': f'/blog/{post.slug}',
-                'summary': post.summary,
-                'img_urls': image_list
+                'summary': post.summary
             })
     except Exception as e:
         print('index blog load error:', e)

@@ -471,8 +471,8 @@
                 {% for post in posts %}
                     <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
                         <div class="bg-gray-200 h-64 flex items-center justify-center">
-                            {% if post.image_list %}
-                            <img src="{{ post.image_list }}" class="w-full h-full object-cover">
+                            {% if post.img_url %}
+                            <img src="{{ post.img_url }}" class="w-full h-full object-cover">
                             {% else %}
                             <span class="text-gray-500 text-xl font-semibold">No Image Available</span>
                             {% endif %}
