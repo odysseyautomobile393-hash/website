@@ -472,6 +472,7 @@
                     <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
                         <div class="bg-gray-200 h-64 flex items-center justify-center">
                             {% set image_list = post.img_urls | from_json %}
+                            {{image_list}}
                             <img src="{{ image_list[0] }}" class="w-full h-full object-cover">
                         </div>
                         <div class="p-6">
