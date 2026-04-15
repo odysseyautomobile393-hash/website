@@ -114,6 +114,14 @@ def slugify(value: str) -> str:
     value = value.strip().lower().replace(' ', '_')
     return ''.join(ch for ch in value if ch.isalnum() or ch in ['_', '-'])
 
+@app.template_filter('from_json')
+def from_json_filter(value):
+    try:
+        return json.loads(value or '[]')
+    except Exception:
+        return []
+
+
 def source_color(name: str) -> str:
     name = (name or '').lower()
     if name == 'facebook':
@@ -506,17 +514,7 @@ def index():
     db = SessionLocal()
     try:
         seed_default_posts(db)
-        raw_posts = db.query(BlogPost).order_by(BlogPost.created_at.desc()).all()
-        posts = []
-        for post in raw_posts:
-            posts.append({
-                'title': post.title,
-                'slug': post.slug,
-                'img_url': post.img_urls,
-                'created_at': post.created_at,
-                'url': f'/blog/{post.slug}',
-                'summary': post.summary
-            })
+        posts = db.query(BlogPost).order_by(BlogPost.created_at.desc()).all()
     except Exception as e:
         print('index blog load error:', e)
         posts = []
