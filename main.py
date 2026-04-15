@@ -317,35 +317,82 @@ services = [
     'Rust Repairs',
     'Body Parts Fitting',
     'Cut & Polish',
-    'Insurance Claims'
+    'Insurance Claims',
+    'Wheel Alignment',
+    'Puncture Repair',
+    'Oil Services',
+    'WOF Repair & Service',
+    'Engine Repair',
+    'Suspension Repair',
+    'Battery Charging & Support'
+]
+service_menu = [
+    {
+      "name": 'Tyres',
+      "link": '/services/tyres',
+      "description": 'Wheel alignment, puncture repair, and tyre support for safe driving.',
+      "items": [
+        {"name": 'Wheel Alignment', "link": '/services/tyres#wheel-alignment'},
+        {"name": 'Puncture Repair', "link": '/services/tyres#puncture-repair'},
+        {"name": 'New Tyres', "link": '/services/tyres/shop'},
+        {"name": 'Used Tyres', "link": '/services/tyres/used-tyres'}
+      ]
+    },
+    {
+      "name": 'Mechanical',
+      "link": '/services/mechanical',
+      "description": 'Oil, WOF, engine, suspension, battery and full mechanical repairs.',
+      "items": [
+        {"name": 'Oil Services', "link": '/services/mechanical#oil-services'},
+        {"name": 'WOF Repair & Service', "link": '/services/mechanical#wof-service'},
+        {"name": 'Engine Repair', "link": '/services/mechanical#engine-repair'},
+        {"name": 'Suspension Repair', "link": '/services/mechanical#suspension-repair'},
+        {"name": 'Battery Charging & Support', "link": '/services/mechanical#battery-charging'}
+      ]
+    },
+    {
+      "name": 'Panel & Paint',
+      "link": '/services/panel-beater',
+      "description": 'Full spray paint, dent repair, rust work, body parts fitting and polish services.',
+      "items": [
+        {"name": 'Full Body Spray', "link": '/services/panel-beater#full-body-spray'},
+        {"name": 'Touch Up & Paint Fade Repair', "link": '/services/panel-beater#touch-up'},
+        {"name": 'Damage & Dent Repairs', "link": '/services/panel-beater#dent-repairs'},
+        {"name": 'Rust Repairs & Bodywork', "link": '/services/panel-beater#rust-repairs'},
+        {"name": 'Body Parts Fitted', "link": '/services/panel-beater/body-parts'},
+        {"name": 'Cut & Polish', "link": '/services/panel-beater/cut-polish'},
+        {"name": 'Winz Quotes', "link": '/services/panel-beater#winz-quotes'},
+        {"name": 'Fibreglass Headlight Polish', "link": '/services/panel-beater#headlight-polish'}
+      ]
+    }
 ]
 servicesd = [
     {
       "icon": 'Paintbrush',
-      "url": '/services/panel-beater/spoilers',
+      "url": '/services/panel-beater',
       "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/car%20painting.jpg',
       "title": 'Full Body Spray Painting',
-      "description": 'Give your vehicle a fresh look with our custom spray painting services. We use high-quality paints and offer a wide range of color options.'
+      "description": 'Give your vehicle a fresh look with our custom spray painting services for cars, boats, trucks, motorcycles, and caravans.'
     },
     {
       "icon": 'Wrench',
-      "url": '/services/panel-beater/body-parts',
+      "url": '/services/panel-beater',
       "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/bump_repair.jpg',
-      "title": 'Dent & Damage Repairs',
-      "description": 'We expertly restore your vehicle with precision and utmost care, from minor dents to extensive body damage.'
+      "title": 'Damage & Dent Repairs',
+      "description": 'We expertly restore your vehicle with precision and care, repairing dents, scratches, and collision damage.'
     },
     {
       "icon": 'Shield',
-      "url": '/services/panel-beater/rust-repairs',
+      "url": '/services/panel-beater',
       "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/body_fix.jpg',
-      "title": 'Rust Repairs',
-      "description": "Don't let rust compromise your vehicle's appearance or safety. We handle rust removal and prevention to extend your vehicle's lifespan."
+      "title": 'Rust Repairs & Bodywork',
+      "description": 'We remove corrosion, repair rusted panels, and restore structural bodywork to protect your vehicle long-term.'
     },
     {
       "icon": 'Puzzle',
       "url": '/services/panel-beater/body-parts',
       "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/repair.jpg',
-      "title": 'Body Parts Fitting',
+      "title": 'Body Parts Fitted',
       "description": 'Whether you need new panels or other body parts, we ensure seamless fitting and a factory-finish appearance.'
     },
     {
@@ -353,7 +400,28 @@ servicesd = [
       "url": '/services/panel-beater/cut-polish',
       "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_fitting.jpeg',
       "title": 'Cut & Polish',
-      "description": "We bring back the original shine and smooth finish to your vehicle's paintwork with our professional cut and polish services."
+      "description": 'We bring back the original shine and smooth finish to your vehicle’s paintwork with our expert cut and polish services.'
+    },
+    {
+      "icon": 'Tire',
+      "url": '/services/tyres',
+      "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/inside_tyre.jpeg',
+      "title": 'Wheel Alignment & Puncture Repair',
+      "description": 'Precision wheel alignment and fast puncture repair to keep your tyres wearing evenly and your vehicle driving safely.'
+    },
+    {
+      "icon": 'Droplet',
+      "url": '/services/mechanical',
+      "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/engine_repair.jpg',
+      "title": 'Oil, WOF & Engine Repair',
+      "description": 'Comprehensive mechanical care including oil services, WOF checks, engine repairs and routine maintenance.'
+    },
+    {
+      "icon": 'BatteryCharging',
+      "url": '/services/mechanical',
+      "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/services/battery.jpg',
+      "title": 'Suspension & Battery Support',
+      "description": 'Suspension repairs, battery charging and electrical support to keep your vehicle dependable on every journey.'
     }
 ]
 
@@ -456,7 +524,7 @@ def index():
     finally:
         db.close()
 
-    return render_template('index.html', services=services, stats=stats, reasons=reasons, servicesd=servicesd, posts=posts)
+    return render_template('index.html', services=services, stats=stats, reasons=reasons, servicesd=servicesd, posts=posts, services_menu=service_menu)
 
 @app.route('/facebook')
 def facebook():
