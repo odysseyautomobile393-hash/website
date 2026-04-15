@@ -65,23 +65,24 @@
                         class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
                         About Us
                     </a>
-                    <button
-                        type="button"
-                        data-action="services-toggle"
-                        class="w-full text-left flex items-center justify-between px-3 py-2 hover:bg-red-600 rounded-md transition-colors text-white">
-                        <span class="font-medium">Services</span>
-                        <span class="inline-block transform transition-transform duration-200 hover:rotate-90">&gt;</span>
-                    </button>
-                    <div class="pl-4 mt-1 space-y-1 hidden">
-                        <a href="/services/panel-beater" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
-                            Panel & Paint
-                        </a>
-                        <a href="/services/tyres" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
-                            Tyres
-                        </a>
-                        <a href="/services/mechanical" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
-                            Mechanics
-                        </a>
+                    <div>
+                        <button
+                            onClick="setIsServicesOpen(!isServicesOpen)"
+                            class="w-full text-left px-3 py-2 hover:bg-red-600 rounded-md transition-colors flex items-center justify-between">
+                            Services
+                            <i data-lucide="ChevronRight" class="w-4 h-4 transition-transform duration-200"></i>
+                        </button>
+                        <div class="pl-4 mt-1 space-y-1">
+                            <a href="/services/panel-beater" class="block px-3 py-2 text-sm hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
+                                Panel Beater & Repair
+                            </a>
+                            <a href="/services/tyres" class="block px-3 py-2 text-sm hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
+                                Tyres
+                            </a>
+                            <a href="/services/wrecked-cars" class="block px-3 py-2 text-sm hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
+                                Wrecked Cars
+                            </a>
+                        </div>
                     </div>
                     <a href="/contact_page"
                         class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
@@ -644,7 +645,7 @@
         const mobileMenu = document.querySelector('.md\\:hidden.bg-black.border-t');
         const servicesBtn = document.querySelector('[data-action="services-toggle"]');
         const servicesMenu = document.querySelector('.pl-4.mt-1.space-y-1');
-        const servicesArrow = servicesBtn ? servicesBtn.querySelector('span') : null;
+        const servicesArrow = servicesBtn ? servicesBtn.querySelector('i') : null;
 
         // hide menus initially
         mobileMenu.style.display = "none";
