@@ -16,7 +16,6 @@
         <a href="/" class="text-xl font-bold">Salvage Odyssey</a>
         <nav class="hidden md:flex gap-4">
           <a href="/" class="hover:underline">Home</a>
-          <a href="/services/panel-beater" class="hover:underline">Services</a>
           <a href="#blog-management" class="hover:underline">Blog</a>
         </nav>
       </div>
@@ -142,34 +141,6 @@
                   <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Delete</button>
                 </form>
               </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="bg-white p-6 rounded shadow">
-      <h2 class="text-xl font-semibold mb-4">Recent Users</h2>
-      <div class="overflow-x-auto">
-        <table class="min-w-full text-left">
-          <thead>
-            <tr>
-              <th class="px-3 py-2">UUID</th>
-              <th class="px-3 py-2">Visits</th>
-              <th class="px-3 py-2">Device</th>
-              <th class="px-3 py-2">First Seen</th>
-              <th class="px-3 py-2">Last Seen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for u in users %}
-            <tr class="border-t">
-              <td class="px-3 py-2">{{ u.user_uuid }}</td>
-              <td class="px-3 py-2">{{ u.visits_count }}</td>
-              <td class="px-3 py-2">{{ u.device }}</td>
-              <td class="px-3 py-2">{{ u.first_seen }}</td>
-              <td class="px-3 py-2">{{ u.last_seen }}</td>
             </tr>
             {% endfor %}
           </tbody>
