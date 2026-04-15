@@ -9,7 +9,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from werkzeug.utils import secure_filename
 import csv
 import os
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, func
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, func, inspect, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 import openai
 # Supabase PostgreSQL settings
@@ -52,6 +52,7 @@ class UserInfo(Base):
     visits_count = Column(Integer, default=0)
     first_seen = Column(DateTime)
     last_seen = Column(DateTime)
+
 class Referrer(Base):
     __tablename__ = 'referrers'
     id = Column(Integer, primary_key=True)
@@ -70,6 +71,36 @@ class BlogPost(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 Base.metadata.create_all(bind=engine)
+
+def ensure_blog_posts_schema():
+    inspector = inspect(engine)
+    if 'blog_posts' not in inspector.get_table_names():
+        return
+
+    existing_columns = {col['name'] for col in inspector.get_columns('blog_posts')}
+    missing_columns = []
+
+    if 'summary' not in existing_columns:
+        missing_columns.append('summary TEXT')
+    if 'details' not in existing_columns:
+        missing_columns.append('details TEXT')
+    if 'img_urls' not in existing_columns:
+        missing_columns.append('img_urls TEXT')
+    if 'url' not in existing_columns:
+        missing_columns.append('url VARCHAR(1024)')
+    if 'created_at' not in existing_columns:
+        missing_columns.append('created_at TIMESTAMP')
+
+    if not missing_columns:
+        return
+
+    with engine.begin() as conn:
+        for column_def in missing_columns:
+            conn.execute(text(f'ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS {column_def}'))
+        if 'created_at' not in existing_columns:
+            conn.execute(text('UPDATE blog_posts SET created_at = NOW() WHERE created_at IS NULL'))
+
+ensure_blog_posts_schema()
 
 def get_db():
     db = SessionLocal()
