@@ -477,14 +477,8 @@
                         </div>
                         <div class="p-6">
                             <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ post.title }}</h3>
-                            <p class="text-gray-600 mb-4">{{ post.date }}</p>
-                            <a href="
-                            {% if 'Body Kits' in post.title or 'Spoilers' in post.title %}
-                                /blog/body-kits-and-spoilers
-                            {% else %}
-                                /blog/body-parts-fitting
-                            {% endif %}
-                            " class="inline-block text-red-600 font-semibold hover:text-red-700 transition-colors">
+                            <p class="text-gray-600 mb-4">{{ post.created_at.strftime('%B %d, %Y') if post.created_at else '' }}</p>
+                            <a href="{{ post.url }}" class="inline-block text-red-600 font-semibold hover:text-red-700 transition-colors">
                                 Read More »
                             </a>
                         </div>

@@ -40,6 +40,16 @@ class Referrer(Base):
     name = Column(String(64), unique=True)
     count = Column(Integer, default=0)
 
+class BlogPost(Base):
+    __tablename__ = 'blog_posts'
+    id = Column(Integer, primary_key=True)
+    title = Column(String(255), nullable=False)
+    slug = Column(String(255), unique=True, nullable=False)
+    summary = Column(Text)
+    img_url = Column(String(1024))
+    url = Column(String(1024))
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 def init_db():
     """Create all tables in the database"""
     print("Creating tables in Supabase PostgreSQL...")
@@ -49,6 +59,7 @@ def init_db():
         print("✓ Tables created:")
         print("  - users_info")
         print("  - referrers")
+        print("  - blog_posts")
     except Exception as e:
         print(f"✗ Error creating tables: {e}")
         return False

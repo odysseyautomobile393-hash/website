@@ -57,12 +57,59 @@ class Referrer(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(64), unique=True)
     count = Column(Integer, default=0)
+
+class BlogPost(Base):
+    __tablename__ = 'blog_posts'
+    id = Column(Integer, primary_key=True)
+    title = Column(String(255), nullable=False)
+    slug = Column(String(255), unique=True, nullable=False)
+    summary = Column(Text)
+    img_url = Column(String(1024))
+    url = Column(String(1024))
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+Base.metadata.create_all(bind=engine)
+
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+def slugify(value: str) -> str:
+    value = value or ''
+    value = value.strip().lower().replace(' ', '-')
+    return ''.join(ch for ch in value if ch.isalnum() or ch == '-')
+
+def source_color(name: str) -> str:
+    name = (name or '').lower()
+    if name == 'facebook':
+        return '#3b82f6'
+    if name == 'direct':
+        return '#ef4444'
+    if name == 'google':
+        return '#dc2626'
+    if name == 'instagram':
+        return '#ec4899'
+    if name == 'other':
+        return '#f97316'
+    return '#6b7280'
+
+def seed_default_posts(db):
+    if db.query(BlogPost).count() == 0:
+        for default_post in DEFAULT_POSTS:
+            blog = BlogPost(
+                title=default_post['title'],
+                slug=default_post['slug'],
+                summary=default_post.get('summary', ''),
+                img_url=default_post.get('img_url'),
+                url=default_post.get('url'),
+                created_at=default_post.get('created_at', datetime.utcnow())
+            )
+            db.add(blog)
+        db.commit()
+
 def detect_device(user_agent: str) -> str:
     ua = (user_agent or '').lower()
     if 'mobile' in ua or 'android' in ua or 'iphone' in ua:
@@ -214,16 +261,22 @@ stats = [
     { "icon": "Star", "value": '5+', "label": 'Client Rating' },
     { "icon": "Award", "value": '5+', "label": 'Years of Experience' }
 ]
-posts = [
+DEFAULT_POSTS = [
     {
       "img_url": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_kits.jpeg',
       "title": 'Transform Your Ride with Body Kits and Spoilers',
-      "date": 'November 29, 2024'
+      "slug": 'transform-your-ride-with-body-kits-and-spoilers',
+      "url": '/blog/body-kits-and-spoilers',
+      "summary": 'Learn how our body kit and spoiler installs can refresh your vehicle’s appearance and performance.',
+      "created_at": datetime(2024, 11, 29)
     },
     {
       "img_url": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_fitting.jpeg',
       "title": 'Expert Body Parts Fitting & Panel Beating Services in Hamilton',
-      "date": 'November 23, 2024'
+      "slug": 'expert-body-parts-fitting-panel-beating-services-in-hamilton',
+      "url": '/blog/body-parts-fitting',
+      "summary": 'We restore damaged panels with precision to bring your car back to factory-fit condition.',
+      "created_at": datetime(2024, 11, 23)
     }
 ]
 
@@ -247,6 +300,16 @@ def index():
     except Exception as e:
         # don't break the site for analytics errors
         print('register_visit error:', e)
+
+    db = SessionLocal()
+    try:
+        seed_default_posts(db)
+        posts = db.query(BlogPost).order_by(BlogPost.created_at.desc()).all()
+    except Exception as e:
+        print('index blog load error:', e)
+        posts = []
+    finally:
+        db.close()
 
     return render_template('index.html', services=services, stats=stats, reasons=reasons, servicesd=servicesd, posts=posts)
 
@@ -287,41 +350,92 @@ def admin():
     try:
         total_users = db.query(UserInfo).count()
         total_visits = db.query(UserInfo).with_entities(func.sum(UserInfo.visits_count)).scalar() or 0
-        referrers = {r.name: r.count for r in db.query(Referrer).all()}
+        ref_rows = db.query(Referrer).all()
+        referrers = {r.name: r.count for r in ref_rows}
         users = db.query(UserInfo).order_by(UserInfo.last_seen.desc()).limit(200).all()
+        seed_default_posts(db)
+        blog_posts = db.query(BlogPost).order_by(BlogPost.created_at.desc()).all()
     finally:
         db.close()
 
     ref_labels = list(referrers.keys())
     ref_values = [referrers[k] for k in ref_labels]
+    ref_colors = [source_color(name) for name in ref_labels]
+    ref_items = [{'name': r.name, 'count': r.count, 'color': source_color(r.name)} for r in ref_rows]
 
-    # Blog posts summary (from in-memory posts list)
-    try:
-        blog_posts_count = len(posts)
-        recent_posts = posts[:3]
-    except Exception:
-        blog_posts_count = 0
-        recent_posts = []
-
-    # Tyres summary (from CSV upload)
-    try:
-        tyres = load_tires_from_csv()
-        tyres_count = len(tyres)
-        recent_tyres = tyres[:3]
-    except Exception:
-        tyres_count = 0
-        recent_tyres = []
+    blog_posts_count = len(blog_posts)
+    recent_posts = blog_posts[:3]
 
     return render_template('admin.html',
                             total_users=total_users,
                             total_visits=total_visits,
                             ref_labels=json.dumps(ref_labels),
                             ref_values=json.dumps(ref_values),
+                            ref_colors=json.dumps(ref_colors),
+                            ref_items=ref_items,
                             users=users,
+                            blog_posts=blog_posts,
                             blog_posts_count=blog_posts_count,
-                            recent_posts=recent_posts,
-                            tyres_count=tyres_count,
-                            recent_tyres=recent_tyres)
+                            recent_posts=recent_posts)
+
+@app.route('/admin/blogs/add', methods=['POST'])
+def add_blog_post():
+    title = request.form.get('title', '').strip()
+    slug = request.form.get('slug', '').strip() or slugify(title)
+    summary = request.form.get('summary', '').strip()
+    img_url = request.form.get('img_url', '').strip()
+    url = request.form.get('url', '').strip() or f'/blog/{slug}'
+
+    if not title:
+        flash('Blog post title is required.', 'error')
+        return redirect(url_for('admin'))
+
+    db = SessionLocal()
+    try:
+        existing = db.query(BlogPost).filter(BlogPost.slug == slug).first()
+        if existing:
+            flash('A blog post with that slug already exists. Choose a different title or slug.', 'error')
+            return redirect(url_for('admin'))
+
+        post = BlogPost(
+            title=title,
+            slug=slug,
+            summary=summary,
+            img_url=img_url,
+            url=url,
+            created_at=datetime.utcnow()
+        )
+        db.add(post)
+        db.commit()
+        flash('Blog post added successfully.', 'success')
+    except Exception as e:
+        db.rollback()
+        print('add blog error:', e)
+        flash('Could not save blog post. Please try again.', 'error')
+    finally:
+        db.close()
+
+    return redirect(url_for('admin'))
+
+@app.route('/admin/blogs/delete/<int:blog_id>', methods=['POST'])
+def delete_blog_post(blog_id):
+    db = SessionLocal()
+    try:
+        post = db.query(BlogPost).filter(BlogPost.id == blog_id).first()
+        if post:
+            db.delete(post)
+            db.commit()
+            flash('Blog post deleted successfully.', 'success')
+        else:
+            flash('Blog post not found.', 'error')
+    except Exception as e:
+        db.rollback()
+        print('delete blog error:', e)
+        flash('Could not delete blog post. Please try again.', 'error')
+    finally:
+        db.close()
+
+    return redirect(url_for('admin'))
 
 @app.route('/admin/data')
 def admin_data():
