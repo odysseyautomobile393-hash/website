@@ -219,7 +219,7 @@ servicesd = [
     },
     {
       "icon": 'Sparkles',
-      "url": '/services/panel-beater/cut-and-polish',
+      "url": '/services/panel-beater/cut-polish',
       "img": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_fitting.jpeg',
       "title": 'Cut & Polish',
       "description": "We bring back the original shine and smooth finish to your vehicle's paintwork with our professional cut and polish services."
@@ -484,6 +484,10 @@ def panel_beater_spoilers():
 @app.route('/services/panel-beater/cut-polish')
 def panel_beater_cut_polish():
     return render_template('services/panel-beater-cut-polish.html')
+
+@app.route('/services/panel-beater/cut-and-polish')
+def panel_beater_cut_and_polish():
+    return redirect(url_for('panel_beater_cut_polish'))
 
 @app.route('/services/mechanical')
 def mechanical_services():
