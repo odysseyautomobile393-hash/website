@@ -27,15 +27,23 @@
                         <a href="#about" class="hover:text-red-600 transition-colors duration-200 font-medium">
                         About Us
                         </a>
-                        <a href="/services/panel-beater" class="hover:text-red-600 transition-colors duration-200 font-medium">
-                            Panel & Paint
-                        </a>
-                        <a href="/services/tyres" class="hover:text-red-600 transition-colors duration-200 font-medium">
-                            Tyres
-                        </a>
-                        <a href="/services/mechanical" class="hover:text-red-600 transition-colors duration-200 font-medium">
-                            Mechanics
-                        </a>
+                        <div class="relative group">
+                            <button type="button" class="inline-flex items-center gap-2 hover:text-red-600 transition-colors duration-200 font-medium">
+                                Services
+                                <span class="inline-block transform transition-transform duration-200 group-hover:rotate-90">&gt;</span>
+                            </button>
+                            <div class="absolute left-0 mt-2 w-48 bg-black border border-gray-800 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                <a href="/services/panel-beater" class="block px-4 py-3 text-white hover:bg-red-600 rounded-t-xl">
+                                    Panel & Paint
+                                </a>
+                                <a href="/services/tyres" class="block px-4 py-3 text-white hover:bg-red-600">
+                                    Tyres
+                                </a>
+                                <a href="/services/mechanical" class="block px-4 py-3 text-white hover:bg-red-600 rounded-b-xl">
+                                    Mechanics
+                                </a>
+                            </div>
+                        </div>
                         <a href="/contact_page" class="hover:text-red-600 transition-colors duration-200 font-medium">
                         Contact
                         </a>
@@ -54,22 +62,29 @@
                 <div class="px-2 pt-2 pb-3 space-y-1">
                     <a
                         href="#about"
-                        class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors"
-                        onClick="setIsMenuOpen(false)">
+                        class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
                         About Us
                     </a>
-                    <a href="/services/panel-beater" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
-                        Panel & Paint
-                    </a>
-                    <a href="/services/tyres" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
-                        Tyres
-                    </a>
-                    <a href="/services/mechanical" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
-                        Mechanics
-                    </a>
+                    <button
+                        type="button"
+                        data-action="services-toggle"
+                        class="w-full text-left flex items-center justify-between px-3 py-2 hover:bg-red-600 rounded-md transition-colors text-white">
+                        <span class="font-medium">Services</span>
+                        <span class="inline-block transform transition-transform duration-200 hover:rotate-90">&gt;</span>
+                    </button>
+                    <div class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="/services/panel-beater" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
+                            Panel & Paint
+                        </a>
+                        <a href="/services/tyres" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
+                            Tyres
+                        </a>
+                        <a href="/services/mechanical" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
+                            Mechanics
+                        </a>
+                    </div>
                     <a href="/contact_page"
-                        class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors"
-                        onClick="setIsMenuOpen(false)">
+                        class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors">
                         Contact
                     </a>
                 </div>
@@ -627,8 +642,9 @@
 
         const menuBtn = document.querySelector('.md\\:hidden button');
         const mobileMenu = document.querySelector('.md\\:hidden.bg-black.border-t');
-        const servicesBtn = document.querySelector('[onClick*="setIsServicesOpen"]');
+        const servicesBtn = document.querySelector('[data-action="services-toggle"]');
         const servicesMenu = document.querySelector('.pl-4.mt-1.space-y-1');
+        const servicesArrow = servicesBtn ? servicesBtn.querySelector('span') : null;
 
         // hide menus initially
         mobileMenu.style.display = "none";
@@ -647,10 +663,23 @@
             servicesBtn.addEventListener("click", () => {
                 isServicesOpen = !isServicesOpen;
                 servicesMenu.style.display = isServicesOpen ? "block" : "none";
+                if (servicesArrow) {
+                    servicesArrow.style.transform = isServicesOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+                }
             });
         }
 
-        // close menu when clicking links
+        // close mobile menu when clicking mobile links
+        if (mobileMenu) {
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener("click", () => {
+                    isMenuOpen = false;
+                    mobileMenu.style.display = "none";
+                });
+            });
+        }
+
+        // close menu when clicking anchor links on the page
         document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener("click", () => {
                 isMenuOpen = false;
