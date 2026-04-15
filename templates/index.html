@@ -27,28 +27,15 @@
                         <a href="#about" class="hover:text-red-600 transition-colors duration-200 font-medium">
                         About Us
                         </a>
-                        <div class="relative group">
-                            <button class="hover:text-red-600 transition-colors duration-200 font-medium flex items-center gap-1">
-                                Services
-                                <i data-lucide="ChevronDown" class="w-4 h-4"></i>
-                            </button>
-                            <div class="absolute left-0 mt-2 w-full max-w-3xl bg-white text-black rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <div class="grid md:grid-cols-3 gap-4 p-4">
-                                    {% for category in services_menu %}
-                                        <div class="group rounded-lg p-4 hover:bg-gray-50 transition-colors duration-200">
-                                            <a href="{{ category.link }}" class="block text-lg font-semibold text-gray-900 hover:text-red-600">{{ category.name }}</a>
-                                            <p class="mt-2 text-sm text-gray-600">{{ category.description }}</p>
-                                            <div class="mt-4 hidden group-hover:block space-y-2">
-                                                {% for item in category['items'] %}
-                                                    <a href="{{ item.link }}" class="block text-sm text-gray-700 hover:text-red-600">{{ item.name }}</a>
-                                                {% endfor %}
-                                            </div>
-                                            <p class="mt-4 text-xs text-gray-400 group-hover:hidden">Hover for details</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/services/panel-beater" class="hover:text-red-600 transition-colors duration-200 font-medium">
+                            Panel & Paint
+                        </a>
+                        <a href="/services/tyres" class="hover:text-red-600 transition-colors duration-200 font-medium">
+                            Tyres
+                        </a>
+                        <a href="/services/mechanical" class="hover:text-red-600 transition-colors duration-200 font-medium">
+                            Mechanics
+                        </a>
                         <a href="/contact_page" class="hover:text-red-600 transition-colors duration-200 font-medium">
                         Contact
                         </a>
@@ -71,25 +58,15 @@
                         onClick="setIsMenuOpen(false)">
                         About Us
                     </a>
-                    <div>
-                        <button
-                            onClick="setIsServicesOpen(!isServicesOpen)"
-                            class="w-full text-left px-3 py-2 hover:bg-red-600 rounded-md transition-colors flex items-center justify-between">
-                            Services
-                            <i data-lucide="ChevronDown" class="w-4 h-4 transition-transform 'rotate-180"></i>
-                        </button>
-                        <div class="pl-4 mt-1 space-y-1">
-                            <a href="/services/panel-beater" class="block px-3 py-2 text-sm hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
-                                Panel Beater & Repair
-                            </a>
-                            <a href="/services/tyres" class="block px-3 py-2 text-sm hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
-                                Tyres
-                            </a>
-                            <a href="/services/mechanical" class="block px-3 py-2 text-sm hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
-                                Mechanical 
-                            </a>
-                        </div>
-                    </div>
+                    <a href="/services/panel-beater" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
+                        Panel & Paint
+                    </a>
+                    <a href="/services/tyres" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
+                        Tyres
+                    </a>
+                    <a href="/services/mechanical" class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors" onClick="setIsMenuOpen(false)">
+                        Mechanics
+                    </a>
                     <a href="/contact_page"
                         class="block px-3 py-2 hover:bg-red-600 rounded-md transition-colors"
                         onClick="setIsMenuOpen(false)">
@@ -655,7 +632,9 @@
 
         // hide menus initially
         mobileMenu.style.display = "none";
-        servicesMenu.style.display = "none";
+        if (servicesMenu) {
+            servicesMenu.style.display = "none";
+        }
 
         // toggle mobile menu
         menuBtn.addEventListener("click", () => {
@@ -664,10 +643,12 @@
         });
 
         // toggle services dropdown
-        servicesBtn.addEventListener("click", () => {
-            isServicesOpen = !isServicesOpen;
-            servicesMenu.style.display = isServicesOpen ? "block" : "none";
-        });
+        if (servicesBtn && servicesMenu) {
+            servicesBtn.addEventListener("click", () => {
+                isServicesOpen = !isServicesOpen;
+                servicesMenu.style.display = isServicesOpen ? "block" : "none";
+            });
+        }
 
         // close menu when clicking links
         document.querySelectorAll('a[href^="#"]').forEach(link => {
