@@ -371,6 +371,10 @@ def panel_beater_spoilers():
 def panel_beater_cut_polish():
     return render_template('services/panel-beater-cut-polish.html')
 
+@app.route('/services/mechanical')
+def mechanical_services():
+    return render_template('services/mechanical.html')
+
 @app.route('/services/tyres')
 def tyres():
     return render_template('services/tyres.html')
@@ -505,6 +509,7 @@ def sitemap():
         url_for('panel_beater_body_parts', _external=True),
         url_for('panel_beater_spoilers', _external=True),
         url_for('panel_beater_cut_polish', _external=True),
+        url_for('mechanical_services', _external=True),
         url_for('tyres_shop', _external=True),
         url_for('used_tyres', _external=True),
         url_for('seo_panel_beaters', _external=True),
