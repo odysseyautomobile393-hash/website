@@ -46,7 +46,8 @@ class BlogPost(Base):
     title = Column(String(255), nullable=False)
     slug = Column(String(255), unique=True, nullable=False)
     summary = Column(Text)
-    img_url = Column(String(1024))
+    details = Column(Text)
+    img_urls = Column(Text)
     url = Column(String(1024))
     created_at = Column(DateTime, default=datetime.utcnow)
 

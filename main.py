@@ -5,7 +5,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, make_response
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, make_response, abort
 from werkzeug.utils import secure_filename
 import csv
 import os
@@ -64,7 +64,8 @@ class BlogPost(Base):
     title = Column(String(255), nullable=False)
     slug = Column(String(255), unique=True, nullable=False)
     summary = Column(Text)
-    img_url = Column(String(1024))
+    details = Column(Text)
+    img_urls = Column(Text)
     url = Column(String(1024))
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -79,8 +80,8 @@ def get_db():
 
 def slugify(value: str) -> str:
     value = value or ''
-    value = value.strip().lower().replace(' ', '-')
-    return ''.join(ch for ch in value if ch.isalnum() or ch == '-')
+    value = value.strip().lower().replace(' ', '_')
+    return ''.join(ch for ch in value if ch.isalnum() or ch in ['_', '-'])
 
 def source_color(name: str) -> str:
     name = (name or '').lower()
@@ -103,12 +104,111 @@ def seed_default_posts(db):
                 title=default_post['title'],
                 slug=default_post['slug'],
                 summary=default_post.get('summary', ''),
-                img_url=default_post.get('img_url'),
-                url=default_post.get('url'),
+                details=default_post.get('details', ''),
+                img_urls=json.dumps(default_post.get('img_urls', [])),
+                url=default_post.get('url', f"/blog/{default_post['slug']}"),
                 created_at=default_post.get('created_at', datetime.utcnow())
             )
             db.add(blog)
         db.commit()
+        for blog in db.query(BlogPost).all():
+            generate_blog_html(blog)
+
+
+def generate_blog_html(post):
+    image_list = json.loads(post.img_urls or '[]')
+    main_image = image_list[0] if image_list else ''
+    thumbs_html = ''
+    for idx, img in enumerate(image_list):
+        thumbs_html += f'<button type="button" class="w-20 h-20 rounded-xl overflow-hidden border border-gray-200" onclick="setMainImage({idx})">'
+        thumbs_html += f'<img src="{img}" class="w-full h-full object-cover">'
+        thumbs_html += '</button>'
+
+    details_paragraphs = ''.join(
+        f'<p class="text-gray-700 mb-6 leading-relaxed">{line.strip()}</p>'
+        for line in (post.details or '').split('\n') if line.strip()
+    )
+    image_js_list = ', '.join(json.dumps(img) for img in image_list)
+    filename = os.path.join('templates', 'blog', f'{post.slug}.html')
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    html_content = """<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>{title} - Salvage Odyssey Auto</title>
+    <link rel=\"icon\" type=\"image/jpg\" href=\"https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/logo-removebg.png\">
+    <script src=\"https://cdn.tailwindcss.com\"></script>
+</head>
+<body>
+    <div class=\"min-h-screen bg-white\">
+        <nav class=\"bg-black text-white sticky top-0 z-50 shadow-lg\">
+            <div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\">
+                <div class=\"flex justify-between items-center h-20\">
+                    <a href=\"/\" class=\"flex-shrink-0 flex items-center\">
+                        <div class=\"w-16 h-16 rounded-lg flex items-center justify-center\">
+                            <img src=\"https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/logo-removebg.png\" alt=\"Logo\" class=\"w-12 h-12\">
+                        </div>
+                        <span class=\"ml-3 text-xl font-bold hidden sm:block\">Salvage Odyssey Auto</span>
+                    </a>
+                    <a href=\"/\" class=\"text-red-600 hover:text-red-700 font-semibold\">← Back to Home</a>
+                </div>
+            </div>
+        </nav>
+        <section class=\"bg-gradient-to-r from-red-600 to-red-700 text-white py-16\">
+            <div class=\"max-w-4xl mx-auto px-4 sm:px-6 lg:px-8\">
+                <h1 class=\"text-4xl md:text-5xl font-bold mb-4\">{title}</h1>
+                <p class=\"text-lg text-red-100\">Published {published}</p>
+            </div>
+        </section>
+        <section class=\"py-16 bg-gray-50\">
+            <div class=\"max-w-4xl mx-auto px-4 sm:px-6 lg:px-8\">
+                <div class=\"bg-white rounded-xl shadow-lg p-8 md:p-12\">
+                    <div class=\"mb-8\">
+                        <img id=\"main-image\" src=\"{main_image}\" alt=\"{title}\" class=\"w-full h-96 object-cover rounded-lg mb-6\">
+                        <div class=\"flex gap-3 overflow-x-auto\">{thumbs_html}</div>
+                    </div>
+                    <div class=\"prose prose-lg max-w-none\">
+                        <p class=\"text-gray-700 mb-6 leading-relaxed\">{summary}</p>
+                        {details_paragraphs}
+                        <div class=\"bg-red-50 border-l-4 border-red-600 p-6 mt-8\">
+                            <p class=\"text-gray-900 font-semibold mb-2\">Need more information?</p>
+                            <p class=\"text-gray-700\">Contact us at <a href=\"tel:0204136 3660\" class=\"text-red-600 font-bold\">020 4136 3660</a> for a free assessment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class=\"py-16 bg-red-600 text-white\">
+            <div class=\"max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center\">
+                <h2 class=\"text-3xl font-bold mb-4\">Ready to talk about your car?</h2>
+                <a href=\"tel:0204136 3660\" class=\"inline-block bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200\">Call Us Now</a>
+            </div>
+        </section>
+        <footer class=\"bg-black text-white py-12\">
+            <div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center\">
+                <p class=\"text-gray-400\">© 2026 Salvage Odyssey Auto. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        function setMainImage(index) {
+            const imgs = [{image_js_list}];
+            document.getElementById('main-image').src = imgs[index];
+        }
+    </script>
+</body>
+</html>""".format(
+        title=post.title,
+        published=post.created_at.strftime('%B %d, %Y') if post.created_at else '',
+        main_image=main_image,
+        thumbs_html=thumbs_html,
+        summary=post.summary,
+        details_paragraphs=details_paragraphs,
+        image_js_list=image_js_list
+    )
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(html_content)
 
 def detect_device(user_agent: str) -> str:
     ua = (user_agent or '').lower()
@@ -263,19 +363,21 @@ stats = [
 ]
 DEFAULT_POSTS = [
     {
-      "img_url": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_kits.jpeg',
+      "img_urls": ['https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_kits.jpeg'],
       "title": 'Transform Your Ride with Body Kits and Spoilers',
-      "slug": 'transform-your-ride-with-body-kits-and-spoilers',
-      "url": '/blog/body-kits-and-spoilers',
+      "slug": 'transform_your_ride_with_body_kits_and_spoilers',
       "summary": 'Learn how our body kit and spoiler installs can refresh your vehicle’s appearance and performance.',
+      "details": 'Our specialist team handles every stage of body kit installation, from part selection to paint matching. We ensure a seamless fit and a finish that elevates your vehicle’s look.\n\nEnjoy improved aerodynamics, a sportier stance, and professional installation tailored to your car.',
+      "url": '/blog/transform_your_ride_with_body_kits_and_spoilers',
       "created_at": datetime(2024, 11, 29)
     },
     {
-      "img_url": 'https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_fitting.jpeg',
+      "img_urls": ['https://zwlhdzpybfsqpmzcslhc.supabase.co/storage/v1/object/public/images/blog/body_fitting.jpeg'],
       "title": 'Expert Body Parts Fitting & Panel Beating Services in Hamilton',
-      "slug": 'expert-body-parts-fitting-panel-beating-services-in-hamilton',
-      "url": '/blog/body-parts-fitting',
+      "slug": 'expert_body_parts_fitting_panel_beating_services_in_hamilton',
       "summary": 'We restore damaged panels with precision to bring your car back to factory-fit condition.',
+      "details": 'When your vehicle needs bodywork, our experienced team provides complete panel beating and body parts fitting solutions.\n\nWe repair damaged doors, fenders, bumpers, and more using high-quality parts and expert alignment techniques.',
+      "url": '/blog/expert_body_parts_fitting_panel_beating_services_in_hamilton',
       "created_at": datetime(2024, 11, 23)
     }
 ]
@@ -304,7 +406,19 @@ def index():
     db = SessionLocal()
     try:
         seed_default_posts(db)
-        posts = db.query(BlogPost).order_by(BlogPost.created_at.desc()).all()
+        raw_posts = db.query(BlogPost).order_by(BlogPost.created_at.desc()).all()
+        posts = []
+        for post in raw_posts:
+            image_list = json.loads(post.img_urls or '[]')
+            posts.append({
+                'title': post.title,
+                'slug': post.slug,
+                'img_url': image_list[0] if image_list else '',
+                'created_at': post.created_at,
+                'url': f'/blog/{post.slug}',
+                'summary': post.summary,
+                'img_urls': image_list
+            })
     except Exception as e:
         print('index blog load error:', e)
         posts = []
@@ -383,11 +497,20 @@ def add_blog_post():
     title = request.form.get('title', '').strip()
     slug = request.form.get('slug', '').strip() or slugify(title)
     summary = request.form.get('summary', '').strip()
-    img_url = request.form.get('img_url', '').strip()
-    url = request.form.get('url', '').strip() or f'/blog/{slug}'
+    details = request.form.get('details', '').strip()
+    img_urls_raw = request.form.get('img_urls', '').strip()
+    img_urls = [u.strip() for u in img_urls_raw.replace(',', '\n').split('\n') if u.strip()]
 
     if not title:
         flash('Blog post title is required.', 'error')
+        return redirect(url_for('admin'))
+    if not img_urls:
+        flash('At least one image URL is required.', 'error')
+        return redirect(url_for('admin'))
+
+    slug = slugify(slug)
+    if not slug:
+        flash('Could not generate a valid slug from the title.', 'error')
         return redirect(url_for('admin'))
 
     db = SessionLocal()
@@ -401,12 +524,14 @@ def add_blog_post():
             title=title,
             slug=slug,
             summary=summary,
-            img_url=img_url,
-            url=url,
+            details=details,
+            img_urls=json.dumps(img_urls),
+            url=f'/blog/{slug}',
             created_at=datetime.utcnow()
         )
         db.add(post)
         db.commit()
+        generate_blog_html(post)
         flash('Blog post added successfully.', 'success')
     except Exception as e:
         db.rollback()
@@ -423,6 +548,9 @@ def delete_blog_post(blog_id):
     try:
         post = db.query(BlogPost).filter(BlogPost.id == blog_id).first()
         if post:
+            filename = os.path.join('templates', 'blog', f'{post.slug}.html')
+            if os.path.exists(filename):
+                os.remove(filename)
             db.delete(post)
             db.commit()
             flash('Blog post deleted successfully.', 'success')
@@ -468,6 +596,26 @@ def blog_body_kits():
 @app.route('/blog/body-parts-fitting')
 def blog_body_parts():
     return render_template('blog/body-parts-fitting.html')
+
+@app.route('/blog/<slug>')
+def blog_post(slug):
+    template_name = f'blog/{slug}.html'
+    filename = os.path.join('templates', template_name)
+    if not os.path.exists(filename):
+        db = SessionLocal()
+        try:
+            post = db.query(BlogPost).filter(BlogPost.slug == slug).first()
+            if post:
+                generate_blog_html(post)
+            else:
+                abort(404)
+        finally:
+            db.close()
+
+    try:
+        return render_template(template_name)
+    except Exception:
+        abort(404)
 
 @app.route('/services/panel-beater')
 def panel_beater():

@@ -102,16 +102,18 @@
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Slug (optional)</label>
             <input type="text" name="slug" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="custom-blog-slug">
+            <p class="mt-2 text-xs text-gray-500">Leave blank to auto-generate from the title.</p>
           </div>
         </div>
         <div class="grid md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Image URL</label>
-            <input type="url" name="img_url" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="https://...">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Image URLs</label>
+            <textarea name="img_urls" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="https://example.com/image1.jpg\nhttps://example.com/image2.jpg"></textarea>
+            <p class="mt-2 text-xs text-gray-500">Enter one image URL per line. The first image is shown as the main hero image.</p>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Post URL</label>
-            <input type="url" name="url" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="/blog/post-slug">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Details</label>
+            <textarea name="details" rows="6" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="Write the full blog content here."></textarea>
           </div>
         </div>
         <div>
@@ -136,8 +138,9 @@
               <td class="px-4 py-3">{{ post.title }}</td>
               <td class="px-4 py-3">{{ post.slug }}</td>
               <td class="px-4 py-3">{{ post.created_at.strftime('%B %d, %Y') if post.created_at else 'Unknown' }}</td>
-              <td class="px-4 py-3">
-                <form action="/admin/blogs/delete/{{ post.id }}" method="POST" onsubmit="return confirm('Delete this post?');">
+              <td class="px-4 py-3 space-x-2">
+                <a href="/blog/{{ post.slug }}" target="_blank" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">View</a>
+                <form action="/admin/blogs/delete/{{ post.id }}" method="POST" class="inline-block" onsubmit="return confirm('Delete this post?');">
                   <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Delete</button>
                 </form>
               </td>
